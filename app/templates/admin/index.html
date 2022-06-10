@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<meta charset="utf-8">
+	<meta name="description" content="Miminium Admin Template v.1">
+	<meta name="author" content="Isna Nur Azis">
+	<meta name="keyword" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Miminium</title>
+ 
+    <!-- start: Css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/asset/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/asset/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/asset/css/jquery.ui.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/asset/css/style.css') }}">
+
+	<!-- end: Css -->
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+ <body id="mimin" class="dashboard">
+      <!-- start: Header -->
+        <nav class="navbar navbar-default header navbar-fixed-top">
+          <div class="col-md-12 nav-wrapper">
+            <div class="navbar-header" style="width:100%;">
+              <div class="opener-left-menu is-open">
+                <span class="top"></span>
+                <span class="middle"></span>
+                <span class="bottom"></span>
+              </div>
+                <a href="index" class="navbar-brand">
+                 <b>MIMIN</b>
+                </a>
+
+            </div>
+          </div>
+        </nav>
+      <!-- end: Header -->
+
+      <div class="container-fluid mimin-wrapper">
+  
+          <!-- start:Left Menu -->
+            <div id="left-menu">
+              <div class="sub-left-menu scroll">
+                <ul class="nav nav-list">
+                    <li><div class="left-bg"></div></li>
+                    <li class="time">
+                      <h1 class="animated fadeInLeft">21:00</h1>
+                      <p class="animated fadeInRight">Sat,October 1st 2029</p>
+                    </li>
+                    <li class="active ripple">
+                      <a class="tree-toggle nav-header"><span class="fa-home fa"></span> Dashboard 
+                        <span class="fa-angle-right fa right-arrow text-right"></span>
+                      </a>
+                      <ul class="nav nav-list tree">
+                          <li><a href="dashboard-v1.html">Dashboard v.1</a></li>
+                          <li><a href="dashboard-v2.html">Dashboard v.2</a></li>
+                      </ul>
+                    </li>
+                    <li class="ripple">
+                      <a class="tree-toggle nav-header">
+                        <span class="fa-diamond fa"></span> Layout
+                        <span class="fa-angle-right fa right-arrow text-right"></span>
+                      </a>
+                      <ul class="nav nav-list tree">
+                        <li><a href="topnav.html">Top Navigation</a></li>
+                        <li><a href="boxed.html">Boxed</a></li>
+                      </ul>
+                    </li>
+ 
+                    <li><a href="{{ url_for('logout') }}">Выход</a></li>
+                  </ul>
+                </div>
+            </div>
+          <!-- end: Left Menu -->
+
+  		
+          <!-- start: content -->
+            <div id="content">
+                <div class="col-md-12" style="padding:20px;">
+
+
+                </div>
+      		  </div>
+          <!-- end: content -->
+      </div>
+
+      <!-- start: Mobile -->
+      <div id="mimin-mobile" class="reverse">
+        <div class="mimin-mobile-menu-list">
+            <div class="col-md-12 sub-mimin-mobile-menu-list animated fadeInLeft">
+                <ul class="nav nav-list">
+                    <li class="active ripple">
+                      <a class="tree-toggle nav-header">
+                        <span class="fa-home fa"></span>Dashboard 
+                        <span class="fa-angle-right fa right-arrow text-right"></span>
+                      </a>
+                      <ul class="nav nav-list tree">
+                          <li><a href="dashboard-v1.html">Dashboard v.1</a></li>
+                          <li><a href="dashboard-v2.html">Dashboard v.2</a></li>
+                      </ul>
+                    </li>
+                    <li class="ripple">
+                      <a class="tree-toggle nav-header">
+                        <span class="fa-diamond fa"></span>Layout
+                        <span class="fa-angle-right fa right-arrow text-right"></span>
+                      </a>
+                      <ul class="nav nav-list tree">
+                        <li><a href="topnav.html">Top Navigation</a></li>
+                        <li><a href="boxed.html">Boxed</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="{{ url_for('logout') }}">Выход</a></li>
+                  </ul>
+            </div>
+        </div>       
+      </div>
+      <button id="mimin-mobile-menu-opener" class="animated rubberBand btn btn-circle btn-danger">
+        <span class="fa fa-bars"></span>
+      </button>
+       <!-- end: Mobile -->
+
+    <!-- start: Javascript -->
+    <script src="{{ url_for('static', filename='admin/asset/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/asset/js/jquery.ui.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/asset/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/asset/js/moment.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/asset/js/jquery.nicescroll.js') }}"></script>
+
+    <!-- custom -->
+    <script src="{{ url_for('static', filename='admin/asset/js/main.js') }}"></script>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from flask_login import UserMixin, LoginManager
 from time import time
 from typing import Optional
 
@@ -26,13 +27,14 @@ class Staffs(db.Model):
         return f'<Staffs {self.name}>'
 
 
-class Users(db.Model):
+class Users(db.Model, UserMixin):
     """
         Класс пользователей
     """
     __tablename__ = 'users'
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
-    name: Optional[str] = db.Column(db.String(20))
+    login: Optional[str] = db.Column(db.String(20), unique=True)
+    name: Optional[str] = db.Column(db.String(20), unique=True)
     is_admin: Optional[int] = db.Column(db.Integer)
     is_delete: Optional[int] = db.Column(db.Integer)
     lastdate: Optional[datetime] = db.Column(db.DateTime, default=datetime.utcnow)
@@ -40,12 +42,12 @@ class Users(db.Model):
     about: Optional[str] = db.Column(db.String(200))
 
     def __repr__(self):
-        return f'<Users {self.phone}>'
+        return f'<Users {self.login}>'
 
-    def set_password(self, password) -> None:
+    def set_password(self, password: str) -> None:
         self.password_hash = generate_password_hash(password)
 
-    def check_password(self, password) -> bool:
+    def check_password(self, password: str) -> bool:
         return check_password_hash(self.password_hash, password)
 
     def get_reset_password_token(self, expires_in=600) -> str:
@@ -120,6 +122,7 @@ class System(db.Model):
         Класс для общих данных
     """
     __tablename__ = 'system'
+    id: Optional[int] = db.Column(db.Integer, primary_key=True)
     title: Optional[str] = db.Column(db.String(20))
     icon: Optional[str] = db.Column(db.String(256))
     bg_pic: Optional[str] = db.Column(db.String(256))
@@ -134,9 +137,9 @@ class Stories(db.Model):
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     text: Optional[str] = db.Column(db.String(255))
     pic: Optional[str] = db.Column(db.String(256))
-    type_stories: Optional[str] = db.Column(db.String(20), index=True, unique=True)
+    type_stories: Optional[str] = db.Column(db.String(20), unique=True)
 
 
 @login.user_loader
 def load_user(id_user):
-    return Users.query.get(int(id_user))
+    return Users.query.filter_by(id=id_user).first()
