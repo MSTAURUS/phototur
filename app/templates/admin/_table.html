@@ -1,0 +1,42 @@
+    <script src="{{ url_for('static', filename='admin/asset/js/tableserach.js') }}"></script>
+
+    {% if filter %}
+    <input class="form-control" type="text" placeholder="Поиск" id="search-text" onkeyup="tableSearch()">
+    {% endif %}
+
+    {% if add %}
+    <div style="margin-top: 20px; width: 200px;">
+        <input class="btn ripple btn-gradient btn-info" id="submit" name="submit" type="submit" value="Добавить" OnClick="step_to('{{ adding }}')">
+    </div>
+    {% endif %}
+    <table class='simple-little-table' cellspacing='0' id="info-table">
+        <thead>
+            <tr>
+                <th width='10px'>№</th>
+            {% for key, value in row_list.items() %}
+                <th width="{{ value.split('~')[1] }}px">{{ value.split('~')[0] }}</th>
+            {% endfor %}
+                <th>Действия</th>
+            </tr><!-- Table Header -->
+        </thead>
+        <tbody>
+            {% for row in models %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                {% for key, value in row_list.items() %}
+                <td>{{ row[key] }}</td>
+                {% endfor %}
+                <td>
+                    <center>
+                        {% if editing %}
+                        <img src="{{ url_for('static', filename='admin/asset/img/edit.png') }}" title="Edit" OnClick="step_to('{{ editing~row.id }}')">&nbsp;&nbsp;
+                        {% endif %}
+                        {% if deleting %}
+                        <img src="{{ url_for('static', filename='admin/asset/img/del.png') }}" title="Delete" OnClick="step_to_confirm('{{ deleting~row.id }}')">
+                        {% endif %}
+                    </center>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>

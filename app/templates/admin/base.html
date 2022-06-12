@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<meta charset="utf-8">
+	<meta name="keyword" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Фототуры - Админ-панель</title>
+ 
+    <!-- start: Css -->
+    {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/asset/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/asset/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/asset/css/jquery.ui.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/asset/css/style.css') }}">
+    {% endblock %}
+	<!-- end: Css -->
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+ <body id="mimin" class="dashboard">
+      <!-- start: Header -->
+        <nav class="navbar navbar-default header navbar-fixed-top">
+          <div class="col-md-12 nav-wrapper">
+            <div class="navbar-header" style="width:100%;">
+              <div class="opener-left-menu is-open">
+                <span class="top"></span>
+                <span class="middle"></span>
+                <span class="bottom"></span>
+              </div>
+
+              <a href="index" class="navbar-brand">Админ-панель</a>
+            </div>
+          </div>
+        </nav>
+      <!-- end: Header -->
+
+      <div class="container-fluid mimin-wrapper">
+  
+          <!-- start:Left Menu -->
+            {% include "admin/main_menu.html" ignore missing %}
+          <!-- end: Left Menu -->
+
+  		
+          <!-- start: content -->
+            <div id="content">
+                <div class="col-md-12" style="padding:20px;">
+                {% block content %}
+                    {% for category, message in get_flashed_messages(with_categories=True) %}
+                    <div class="alert alert-{{category}} alert-dismissible fade in">{{ message }}</div>
+                    {% endfor %}
+                    {% block app_content %}{% endblock %}
+                {% endblock %}
+                </div>
+      		  </div>
+          <!-- end: content -->
+      </div>
+
+      <!-- start: Mobile -->
+       {% include "admin/moblie_menu.html" ignore missing %}
+      <!-- end: Mobile -->
+
+    <!-- start: Javascript -->
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='admin/asset/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/asset/js/jquery.ui.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/asset/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/asset/js/moment.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/asset/js/jquery.nicescroll.js') }}"></script>
+
+    <!-- custom -->
+    <script src="{{ url_for('static', filename='admin/asset/js/main.js') }}"></script>
+   {% endblock %}
+
+  </body>
+</html>

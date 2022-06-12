@@ -336,3 +336,16 @@
     treeMenu();
     hide();
 })(jQuery);
+
+function step_to(url)
+{
+    window.location=url;
+};
+
+function step_to_confirm(url)
+{
+	if (confirm('Вы уверены?'))
+	{
+        window.location=url;
+    }
+};

@@ -17,6 +17,9 @@ def exception(f):
     return decorated_function
 
 
+def stripex(value):
+    return value.strip() if value else value
+
 def get_photo_vk(url: str) -> List[str]:
     pass
 

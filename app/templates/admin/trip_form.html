@@ -1,0 +1,29 @@
+{% extends "admin/base.html" %}
+
+{% block app_content %}
+    <div class="container col-md-8 order-md-1">
+        <form action="{{ url_for("admin_trip_add", id_trip=travels.id) }}" method="post">
+            <div class="form-group "><label class="control-label" for="name">Заголовок:</label>
+                <input type="text" class="form-control" name="name" value="{{ travels.name }}">
+            </div>
+            <div class="form-group "><label class="control-label" for="price">Цена:</label>
+                <input type="text" class="form-control" name="price" value="{{ travels.price }}">
+            </div>
+            <div class="form-group "><label class="control-label" for="short_desc">Короткое описание (33 символа):</label>
+                <input type="text" class="form-control" maxlength="33" name="short_desc" value="{{ travels.short_desc }}">
+            </div>
+            <div class="form-group "><label class="control-label" for="description">Описание:</label>
+                <textarea type="text" class="form-control" name="description">{{ travels.description }}</textarea>
+            </div>
+            <div class="form-group "><label class="control-label" for="photo_list">Ссылки на фото (1 на строку):</label>
+                <textarea type="text" class="form-control" name="photo_list">{{ travels.photo_list }}</textarea>
+            </div>
+            <div class="form-group "><label class="control-label" for="showed">Отображать?</label>
+               <input type="checkbox" class="checkbox" name="showed" {% if travels.showed %} checked {% endif %}">
+            </div>
+            <input type="hidden" name="id" value="{{ travels.id }}">
+            <p><input type="submit" value="Отправить" class="btn ripple btn-gradient btn-info"></p>
+        </form>
+    </div>
+
+{% endblock %}
