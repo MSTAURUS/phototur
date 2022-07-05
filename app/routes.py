@@ -50,9 +50,10 @@ def logout():
 @exception
 @app.route("/register", methods=["GET"])
 def register():
-    user: dao = dao.UserDAO()
+    pass
+    # user: dao = dao.UserDAO()
 
-    user.create_superuser(login="admin", password="admin")
+    # user.create_superuser(login="admin", password="admin")
 
 
 @exception
@@ -122,7 +123,8 @@ def admin():
 @app.route("/admin/system", methods=["GET"], strict_slashes=False)
 @login_required
 def admin_system():
-    system_info: dao = dao.SystemDAO.get_system()
+    system: dao = dao.SystemDAO()
+    system_info: List = system.get_system()
     # print(system_info)
     # if not system_info:
     #     flash('Ошибка получения данных', 'error')
@@ -142,7 +144,7 @@ def admin_system_save():
 
     sys: dao = dao.SystemDAO(id_system)
 
-    sys.update(title, icon, bg_pic, main_video)
+    sys.save(title, icon, bg_pic, main_video)
 
     return redirect(url_for("admin_system"))
 
@@ -158,7 +160,7 @@ def admin_trips():
         2: "Цена~15",
     }
 
-    travels: dao = dao.TripsDAO(None)
+    travels: dao = dao.TripsDAO()
 
     trips_list: List = travels.get_trips()
 
@@ -217,6 +219,179 @@ def admin_trip_add(id_trip):
     if request.form.get("showed"):
         showed = 1
 
-    travels.update(name, price, short_desc, description, photo_list, showed)
+    travels.save(name, price, short_desc, description, photo_list, showed)
     flash("Запись добавлена.", "success")
     return redirect(url_for("admin_trips"))
+
+
+@exception
+@app.route("/admin/p/main", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_page_main():
+    """
+        Настройка главной страницы
+    """
+    data = {}
+
+    system: dao = dao.SystemDAO()
+    system_info: List = system.get_system()
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO("main_head")
+    head_info: List = head_query.get_head()
+
+    print(head_info)
+
+    data.update({"main_title": head_info.title})
+    data.update({"main_desc": head_info.description})
+
+    # нижний текст на картинке
+    footer_query: dao = dao.HeadsDAO("main_footer")
+    footer_info: List = footer_query.get_head()
+
+    data.update({"footer_title": footer_info.title})
+    data.update({"footer_desc": footer_info.description})
+
+    # блок наша история
+    stories_query: dao = dao.StoriesDAO("our")
+    story_info: List = stories_query.get_story()
+
+    data.update({"story_bg": story_info.bg_text})
+    data.update({"story_up_text": story_info.up_head})
+    data.update({"story_down_text": story_info.down_head})
+    data.update({"story_text": story_info.text})
+    data.update({"story_pic": story_info.pic})
+
+    # print(system_info)
+    # if not system_info:
+    #     flash('Ошибка получения данных', 'error')
+    #     return redirect(url_for("admin"))
+
+    return render_template("admin/main_page.html", system_info=system_info, data=data)
+
+
+@exception
+@app.route("/admin/p/main", methods=["POST"], strict_slashes=False)
+@login_required
+def admin_page_main_save():
+    """
+        Сохранение настроек главной страницы
+    """
+
+    main_title: str = stripex(request.form.get("main_title"))
+    main_desc: str = stripex(request.form.get("main_desc"))
+    footer_title: str = stripex(request.form.get("footer_title"))
+    footer_desc: str = stripex(request.form.get("footer_desc"))
+    type_head: str = stripex(request.form.get("type_head"))
+
+    story_bg: str = stripex(request.form.get("story_bg"))
+    story_up_text: str = stripex(request.form.get("story_up_text"))
+    story_down_text: str = stripex(request.form.get("story_down_text"))
+    story_text: str = stripex(request.form.get("story_text"))
+    story_pic: str = stripex(request.form.get("story_pic"))
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO("main_head")
+    head_query.save(main_title, main_desc, "main_head")
+
+    # нижний текст на картинке
+    footer_query: dao = dao.HeadsDAO("main_footer")
+    footer_query.save(footer_title, footer_desc, "main_footer")
+
+    # блок наша история
+    stories_query: dao = dao.StoriesDAO("our")
+    stories_query.save(story_text, story_bg, story_up_text, story_down_text, story_pic, "our")
+
+    return redirect(url_for("admin_page_main"))
+
+
+@exception
+@app.route("/admin/p/about", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_page_about():
+    """
+        Настройка страницы о нас
+    """
+    system: dao = dao.SystemDAO()
+    system_info: List = system.get_system()
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO('about_head')
+    head_info: List = head_query.get_head()
+
+    # нижний текст на картинке
+    footer_query: dao = dao.HeadsDAO('about_footer')
+    footer_info: List = footer_query.get_head()
+
+    # блок нашей команды
+    staff_query: dao = dao.HeadsDAO('main_staff')
+    staff_info: List = staff_query.get_head()
+
+    # блок наша история
+    stories_query: dao = dao.StoriesDAO('our')
+    story_info: List = stories_query.get_story()
+
+    # блок наша миссия
+    mission_query: dao = dao.StoriesDAO('mission')
+    mission_info: List = mission_query.get_story()
+
+    # print(system_info)
+    # if not system_info:
+    #     flash('Ошибка получения данных', 'error')
+    #     return redirect(url_for("admin"))
+    return render_template("admin/about_page.html", system_info=system_info)
+
+
+@exception
+@app.route("/admin/p/trips", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_page_trips():
+    """
+        Настройка страницы путешествий
+    """
+    system: dao = dao.SystemDAO()
+    system_info: List = system.get_system()
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO('trips_head')
+    head_info: List = head_query.get_head()
+
+    return render_template("admin/trips_page.html", system_info=system_info)
+
+
+@exception
+@app.route("/admin/p/blog", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_page_blog():
+    """
+        Настройка страницы блога
+    """
+    system: dao = dao.SystemDAO()
+    system_info: List = system.get_system()
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO('blog_head')
+    head_info: List = head_query.get_head()
+
+    return render_template("admin/about_page.html", system_info=system_info)
+
+
+@exception
+@app.route("/admin/p/contacts", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_page_contacts():
+    """
+        Настройка страницы contacts
+    """
+    system: dao = dao.SystemDAO()
+    system_info: List = system.get_system()
+
+    # верхний текст на картинке
+    contacts_query: dao = dao.HeadsDAO('contacts_head')
+    contacts_info: List = contacts_query.get_head()
+
+    # контакты
+    contacts: dao = dao.ContactsDAO()
+    contacts_list: List = contacts.get_contacts()
+
+    return render_template("admin/contacts_page.html", system_info=system_info)

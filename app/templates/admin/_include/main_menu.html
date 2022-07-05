@@ -19,17 +19,19 @@
                         <span class="fa-angle-right fa right-arrow text-right"></span>
                       </a>
                       <ul class="nav nav-list tree">
-                        <li><a href="topnav.html">Главная</a></li>
-                        <li><a href="boxed.html">О нас</a></li>
-                        <li><a href="boxed.html">Путешествия</a></li>
-                        <li><a href="boxed.html">Блог</a></li>
-                        <li><a href="boxed.html">Контакты</a></li>
+                        <li><a href="{{ url_for("admin_page_main") }}">Главная</a></li>
+                        <li><a href="{{ url_for("admin_page_about") }}">О нас</a></li>
+                        <li><a href="{{ url_for("admin_page_trips") }}">Путешествия</a></li>
+                        <li><a href="{{ url_for("admin_page_blog") }}">Блог</a></li>
+                        <li><a href="{{ url_for("admin_page_contacts") }}">Контакты</a></li>
                       </ul>
                     </li>
                     <li class="ripple">
                         <li><a href="topnav.html"><span class="fa fa-pencil-square-o"></span>Блог</a></li>
                         <li><a href="{{ url_for("admin_trips") }}"><span class="fa fa-plane"></span>Путешествия</a></li>
+                        <li><a href="{{ url_for("admin_trips") }}"><span class="fa fa-group"></span>Команда</a></li>
                     </li>
+
                     <li><a href="{{ url_for('logout') }}">Выход</a></li>
                   </ul>
                 </div>

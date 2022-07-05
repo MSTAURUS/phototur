@@ -88,6 +88,7 @@ class Contacts(db.Model):
     instagram: Optional[str] = db.Column(db.String(128))
     telegram: Optional[str] = db.Column(db.String(128))
     email: Optional[str] = db.Column(db.String(128))
+    phone: Optional[str] = db.Column(db.String(128))
     desc: Optional[str] = db.Column(db.String(256))
 
 
@@ -111,9 +112,8 @@ class Heads(db.Model):
     """
     __tablename__ = 'heads'
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
-    bg_text: Optional[str] = db.Column(db.String(20))
-    up_head: Optional[str] = db.Column(db.String(20))
-    down_head: Optional[str] = db.Column(db.String(20))
+    title: Optional[str] = db.Column(db.String(100))
+    description: Optional[str] = db.Column(db.String(200))
     type_head: Optional[str] = db.Column(db.String(20), index=True, unique=True)
 
 
@@ -137,6 +137,9 @@ class Stories(db.Model):
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     text: Optional[str] = db.Column(db.String(255))
     pic: Optional[str] = db.Column(db.String(256))
+    bg_text: Optional[str] = db.Column(db.String(20))
+    up_head: Optional[str] = db.Column(db.String(20))
+    down_head: Optional[str] = db.Column(db.String(20))
     type_stories: Optional[str] = db.Column(db.String(20), unique=True)
 
 

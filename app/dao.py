@@ -1,7 +1,7 @@
 from app import db
-from app.models import Users, System, Trips
+from app.models import Users, System, Trips, Heads, Stories, Blog, Contacts
 from datetime import datetime
-from typing import Dict, List
+from typing import List
 
 
 class UserDAO:
@@ -41,17 +41,16 @@ class UserDAO:
 
 
 class SystemDAO:
-    def __init__(self, id_system: int):
+    def __init__(self, id_system: int = None):
         if id_system:
             self.sys = System.query.filter_by(id=id_system).first()
         else:
             self.sys = System()
 
-    @staticmethod
-    def get_system() -> List[System]:
-        return System.query.first()
+    def get_system(self) -> List[System]:
+        return self.sys.query.first()
 
-    def update(self, title: str, icon: str, bg_pic: str, main_video: str) -> None:
+    def save(self, title: str, icon: str, bg_pic: str, main_video: str) -> None:
         self.sys.icon = icon
         self.sys.title = title
         self.sys.bg_pic = bg_pic
@@ -64,7 +63,7 @@ class SystemDAO:
 
 
 class TripsDAO:
-    def __init__(self, id_trips: int):
+    def __init__(self, id_trips: int = None):
         if id_trips:
             self.trips = Trips.query.filter_by(id=id_trips).first()
         else:
@@ -89,7 +88,7 @@ class TripsDAO:
         db.session.delete(self.trips)
         db.session.commit()
 
-    def update(
+    def save(
         self,
         name: str,
         price: int,
@@ -97,7 +96,7 @@ class TripsDAO:
         description: str,
         photo_list: str,
         showed: bool,
-    ):
+    ) -> None:
         self.trips.name = name
         self.trips.price = price
         self.trips.short_desc = short_desc
@@ -109,3 +108,62 @@ class TripsDAO:
         if self.trips.id is None:
             db.session.add(self.trips)
         db.session.commit()
+
+
+class HeadsDAO:
+    def __init__(self, type_head: str = None):
+        self.head = Heads.query.filter_by(type_head=type_head).first()
+        if not type_head or self.head is None:
+            self.head = Heads()
+
+    def get_head(self) -> List[Heads]:
+        return self.head
+    
+    def save(self, title: str, description: str, type_head: str) -> None:
+        self.head.title = title
+        self.head.description = description
+
+        if not self.head.id:
+            self.head.type_head = type_head
+            db.session.add(self.head)
+
+        db.session.commit()
+
+
+class BlogDAO:
+    def __init__(self):
+        pass
+
+    def get_last_blog_record(self) -> List[Blog]:
+        return []
+
+
+class StoriesDAO:
+    def __init__(self, type_stories: str = None):
+        self.story = Stories.query.filter_by(type_stories=type_stories).first()
+        # get вместо фёрст +фильтр?
+        if not type_stories or self.story is None:
+            self.story = Stories()
+
+    def get_story(self) -> List[Stories]:
+        return self.story
+
+    def save(self, text: str, bg_text: str, up_head: str, down_head: str, pic: str, type_stories: str):
+        self.story.text = text
+        self.story.bg_text = bg_text
+        self.story.up_head = up_head
+        self.story.down_head = down_head
+        self.story.pic = pic
+
+        if not self.story.id:
+            self.story.type_stories = type_stories
+            db.session.add(self.story)
+        db.session.commit()
+
+
+class ContactsDAO:
+    def __init__(self):
+        self.contacts = Contacts()
+
+    def get_contacts(self) -> List[Contacts]:
+        return self.contacts
