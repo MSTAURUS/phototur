@@ -236,7 +236,7 @@ def admin_page_main():
     """
     Настройка главной страницы
     """
-    data = {}
+    data: Dict = {}
 
     system_info: List = get_system_info()
 
@@ -246,25 +246,25 @@ def admin_page_main():
 
     print(head_info)
 
-    data.update({"main_title": head_info.title})
-    data.update({"main_desc": head_info.description})
+    data["main_title"] = head_info.title
+    data["main_desc"] = head_info.description
 
     # нижний текст на картинке
     footer_query: dao = dao.HeadsDAO("main_footer")
     footer_info: List = footer_query.get_head()
 
-    data.update({"footer_title": footer_info.title})
-    data.update({"footer_desc": footer_info.description})
+    data["footer_title"] = footer_info.title
+    data["footer_desc"] = footer_info.description
 
     # блок наша история
     stories_query: dao = dao.StoriesDAO("our")
     story_info: List = stories_query.get_story()
 
-    data.update({"story_bg": story_info.bg_text})
-    data.update({"story_up_text": story_info.up_head})
-    data.update({"story_down_text": story_info.down_head})
-    data.update({"story_text": story_info.text})
-    data.update({"story_pic": story_info.pic})
+    data["story_bg"] = story_info.bg_text
+    data["story_up_text"] = story_info.up_head
+    data["story_down_text"] = story_info.down_head
+    data["story_text"] = story_info.text
+    data["story_pic"] = story_info.pic
 
     # print(system_info)
     # if not system_info:
@@ -361,14 +361,53 @@ def admin_page_trips():
     """
     Настройка страницы путешествий
     """
+    data: Dict = {}
     system_info: List = get_system_info()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("trips_head")
     head_info: List = head_query.get_head()
 
+    data["trips_title"] = head_info.title
+    data["trips_desc"] = head_info.description
+
+    # Заголовки возьмём в истории, тк формат тот же
+    trips_query: dao = dao.StoriesDAO("trips")
+    trips_info: List = trips_query.get_story()
+
+    data["trips_bg"] = trips_info.bg_text
+    data["trips_up_text"] = trips_info.up_head
+    data["trips_down_text"] = trips_info.down_head
+
     title = "Путешествия"
-    return render_template("admin/trips_page.html", system_info=system_info, title=title)
+
+    return render_template("admin/trips_page.html", system_info=system_info, title=title, data=data)
+
+
+@exception
+@app.route("/admin/p/trips", methods=["POST"], strict_slashes=False)
+@login_required
+def admin_page_trips_save():
+    """
+    Сохранение настроек путешествий
+    """
+
+    trips_title: str = stripex(request.form.get("trips_title"))
+    trips_desc: str = stripex(request.form.get("trips_desc"))
+
+    trips_bg: str = stripex(request.form.get("trips_bg"))
+    trips_up_text: str = stripex(request.form.get("trips_up_text"))
+    trips_down_text: str = stripex(request.form.get("trips_down_text"))
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO("trips_head")
+    head_query.save(trips_title, trips_desc, "trips_head")
+
+    # Сохранение заголовка
+    stories_query: dao = dao.StoriesDAO("trips")
+    stories_query.save('', trips_bg, trips_up_text, trips_down_text, '', "trips")
+
+    return redirect(url_for("admin_page_trips"))
 
 
 @exception
@@ -385,7 +424,7 @@ def admin_page_blog():
     head_info: List = head_query.get_head()
 
     title = "Блог"
-    return render_template("admin/about_page.html", system_info=system_info, title=title)
+    return render_template("admin/blog_page.html", system_info=system_info, title=title)
 
 
 @exception

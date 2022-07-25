@@ -2,24 +2,7 @@
 
 {% block app_content %}
     <div class="container col-md-8 order-md-1">
-        <form action="{{ url_for("admin_system_save") }}" method="post">
-            <div class="form-group "><label class="control-label" for="main_video">Ссылка на видео в шапке:</label>
-                <input type="text" class="form-control" name="main_video" value="{{ system_info.main_video }}">
-            </div>
-
-            <div class="form-group "><label class="control-label" for="title">Заголовок:</label>
-                <input type="text" class="form-control" name="title" value="{{ system_info.title }}">
-            </div>
-            <div class="form-group "><label class="control-label" for="icon">Иконка:</label>
-                <input type="text" class="form-control" name="icon" value="{{ system_info.icon }}">
-            </div>
-            <div class="form-group "><label class="control-label" for="bg_pic">Главный фон:</label>
-                <input type="text" class="form-control" name="bg_pic" value="{{ system_info.bg_pic }}">
-            </div>
-
-            <input type="hidden" name="id" value="{{ system_info.id }}">
-            <p><input type="submit" value="Отправить" class="btn ripple btn-gradient btn-info"></p>
-        </form>
+        <H1>Раздел в разработке</H1>
     </div>
 
 {% endblock %}
