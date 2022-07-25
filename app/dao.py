@@ -163,7 +163,22 @@ class StoriesDAO:
 
 class ContactsDAO:
     def __init__(self):
-        self.contacts = Contacts()
+        self.contacts = Contacts.query.first()
+        if self.contacts is None:
+            self.contacts = Contacts()
 
     def get_contacts(self) -> List[Contacts]:
         return self.contacts
+
+    def save(self, vk: str, instagram: str, telegram: str, email: str, phone: str, desc: str):
+        self.contacts.vk = vk
+        self.contacts.instagram = instagram
+        self.contacts.telegram = telegram
+        self.contacts.email = email
+        self.contacts.phone = phone
+        self.contacts.desc = desc
+
+        if not self.contacts.id:
+            db.session.add(self.contacts)
+
+        db.session.commit()

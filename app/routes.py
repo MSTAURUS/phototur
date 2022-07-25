@@ -23,6 +23,12 @@ def before_request():
         db.session.commit()
 
 
+@exception
+def get_system_info() -> List:
+    system: dao = dao.SystemDAO()
+    return system.get_system()
+
+
 @app.route("/favicon.ico")
 @exception
 def favicon():
@@ -123,8 +129,7 @@ def admin():
 @app.route("/admin/system", methods=["GET"], strict_slashes=False)
 @login_required
 def admin_system():
-    system: dao = dao.SystemDAO()
-    system_info: List = system.get_system()
+    system_info: List = get_system_info()
     # print(system_info)
     # if not system_info:
     #     flash('Ошибка получения данных', 'error')
@@ -229,12 +234,11 @@ def admin_trip_add(id_trip):
 @login_required
 def admin_page_main():
     """
-        Настройка главной страницы
+    Настройка главной страницы
     """
     data = {}
 
-    system: dao = dao.SystemDAO()
-    system_info: List = system.get_system()
+    system_info: List = get_system_info()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("main_head")
@@ -267,7 +271,10 @@ def admin_page_main():
     #     flash('Ошибка получения данных', 'error')
     #     return redirect(url_for("admin"))
 
-    return render_template("admin/main_page.html", system_info=system_info, data=data)
+    title = "Главная страница"
+    return render_template(
+        "admin/main_page.html", system_info=system_info, data=data, title=title
+    )
 
 
 @exception
@@ -275,7 +282,7 @@ def admin_page_main():
 @login_required
 def admin_page_main_save():
     """
-        Сохранение настроек главной страницы
+    Сохранение настроек главной страницы
     """
 
     main_title: str = stripex(request.form.get("main_title"))
@@ -300,7 +307,9 @@ def admin_page_main_save():
 
     # блок наша история
     stories_query: dao = dao.StoriesDAO("our")
-    stories_query.save(story_text, story_bg, story_up_text, story_down_text, story_pic, "our")
+    stories_query.save(
+        story_text, story_bg, story_up_text, story_down_text, story_pic, "our"
+    )
 
     return redirect(url_for("admin_page_main"))
 
@@ -310,36 +319,39 @@ def admin_page_main_save():
 @login_required
 def admin_page_about():
     """
-        Настройка страницы о нас
+    Настройка страницы о нас
     """
-    system: dao = dao.SystemDAO()
-    system_info: List = system.get_system()
+    system_info: List = get_system_info()
 
     # верхний текст на картинке
-    head_query: dao = dao.HeadsDAO('about_head')
+    head_query: dao = dao.HeadsDAO("about_head")
     head_info: List = head_query.get_head()
 
     # нижний текст на картинке
-    footer_query: dao = dao.HeadsDAO('about_footer')
+    footer_query: dao = dao.HeadsDAO("about_footer")
     footer_info: List = footer_query.get_head()
 
     # блок нашей команды
-    staff_query: dao = dao.HeadsDAO('main_staff')
+    staff_query: dao = dao.HeadsDAO("main_staff")
     staff_info: List = staff_query.get_head()
 
     # блок наша история
-    stories_query: dao = dao.StoriesDAO('our')
+    stories_query: dao = dao.StoriesDAO("our")
     story_info: List = stories_query.get_story()
 
     # блок наша миссия
-    mission_query: dao = dao.StoriesDAO('mission')
+    mission_query: dao = dao.StoriesDAO("mission")
     mission_info: List = mission_query.get_story()
 
     # print(system_info)
     # if not system_info:
     #     flash('Ошибка получения данных', 'error')
     #     return redirect(url_for("admin"))
-    return render_template("admin/about_page.html", system_info=system_info)
+
+    title = "О нас"
+    return render_template(
+        "admin/about_page.html", system_info=system_info, title=title
+    )
 
 
 @exception
@@ -347,16 +359,16 @@ def admin_page_about():
 @login_required
 def admin_page_trips():
     """
-        Настройка страницы путешествий
+    Настройка страницы путешествий
     """
-    system: dao = dao.SystemDAO()
-    system_info: List = system.get_system()
+    system_info: List = get_system_info()
 
     # верхний текст на картинке
-    head_query: dao = dao.HeadsDAO('trips_head')
+    head_query: dao = dao.HeadsDAO("trips_head")
     head_info: List = head_query.get_head()
 
-    return render_template("admin/trips_page.html", system_info=system_info)
+    title = "Путешествия"
+    return render_template("admin/trips_page.html", system_info=system_info, title=title)
 
 
 @exception
@@ -364,16 +376,16 @@ def admin_page_trips():
 @login_required
 def admin_page_blog():
     """
-        Настройка страницы блога
+    Настройка страницы блога
     """
-    system: dao = dao.SystemDAO()
-    system_info: List = system.get_system()
+    system_info: List = get_system_info()
 
     # верхний текст на картинке
-    head_query: dao = dao.HeadsDAO('blog_head')
+    head_query: dao = dao.HeadsDAO("blog_head")
     head_info: List = head_query.get_head()
 
-    return render_template("admin/about_page.html", system_info=system_info)
+    title = "Блог"
+    return render_template("admin/about_page.html", system_info=system_info, title=title)
 
 
 @exception
@@ -381,17 +393,58 @@ def admin_page_blog():
 @login_required
 def admin_page_contacts():
     """
-        Настройка страницы contacts
+    Настройка страницы contacts
     """
-    system: dao = dao.SystemDAO()
-    system_info: List = system.get_system()
+    data: Dict = {}
+
+    system_info = get_system_info()
 
     # верхний текст на картинке
-    contacts_query: dao = dao.HeadsDAO('contacts_head')
+    contacts_query: dao = dao.HeadsDAO("contacts_head")
     contacts_info: List = contacts_query.get_head()
+
+    data["contacts_title"] = contacts_info.title
+    data["contacts_desc"] = contacts_info.description
 
     # контакты
     contacts: dao = dao.ContactsDAO()
     contacts_list: List = contacts.get_contacts()
 
-    return render_template("admin/contacts_page.html", system_info=system_info)
+    data["vk"] = contacts_list.vk
+    data["instagram"] = contacts_list.instagram
+    data["telegram"] = contacts_list.telegram
+    data["email"] = contacts_list.email
+    data["phone"] = contacts_list.phone
+    data["desc"] = contacts_list.desc
+
+    title = "Контакты"
+    return render_template("admin/contacts_page.html", system_info=system_info, title=title, data=data)
+
+
+@exception
+@app.route("/admin/p/contacts", methods=["POST"], strict_slashes=False)
+@login_required
+def admin_page_contacts_save():
+    """
+    Сохранение настроек контактов
+    """
+
+    contacts_title: str = stripex(request.form.get("contacts_title"))
+    contacts_desc: str = stripex(request.form.get("contacts_desc"))
+
+    vk: str = stripex(request.form.get("vk"))
+    instagram: str = stripex(request.form.get("instagram"))
+    telegram: str = stripex(request.form.get("telegram"))
+    email: str = stripex(request.form.get("email"))
+    phone: str = stripex(request.form.get("phone"))
+    desc: str = stripex(request.form.get("desc"))
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO("contacts_head")
+    head_query.save(contacts_title, contacts_desc, "contacts_head")
+
+    # контакты
+    contacts: dao = dao.ContactsDAO()
+    contacts.save(vk, instagram, telegram, email, phone, desc)
+
+    return redirect(url_for("admin_page_contacts"))
