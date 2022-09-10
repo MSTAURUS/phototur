@@ -31,13 +31,8 @@ class UserDAO:
 
     def check_login(self, login: str, password: str) -> bool:
         usr = self.get_by_login(login)
-
         check_pwd = usr.check_password(password)
-
-        if check_pwd and usr:
-            return True
-
-        return False
+        return bool(check_pwd and usr)
 
 
 class SystemDAO:
@@ -75,10 +70,21 @@ class TripsDAO:
             Trips.price,
             Trips.short_desc,
             Trips.description,
-            Trips.photo_list,
+            Trips.photo_card,
             Trips.showed,
             Trips.id,
         )
+        # rows = self.trips.query.add_columns(
+        #     Trips.name,
+        #     Trips.price,
+        #     Trips.short_desc,
+        #     Trips.description,
+        #     Trips.photo_card,
+        #     Trips.showed,
+        #     Trips.id,
+        # )
+        #
+        # return [Trips(**row) for row in rows]
 
     def get_trip(self) -> List[Trips]:
         # rows = self.trips.query.filter_by(id=id_trip).first()

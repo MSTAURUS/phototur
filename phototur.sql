@@ -16,123 +16,118 @@
 
 
 -- Дамп структуры базы данных phototur
-CREATE DATABASE IF NOT EXISTS `phototur` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE IF NOT EXISTS `phototur` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 USE `phototur`;
 
 -- Дамп структуры для таблица phototur.blog
 CREATE TABLE IF NOT EXISTS `blog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL DEFAULT 0,
-  `short_text` varchar(136) NOT NULL,
-  `long_text` text NOT NULL,
-  `pic` varchar(256) NOT NULL DEFAULT '',
+  `short_text` varchar(136) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `long_text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `pic` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   `showed` tinyint(4) NOT NULL DEFAULT 0,
   `lastdate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `FK_USER` (`id_user`),
   CONSTRAINT `FK_USER` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Дамп данных таблицы phototur.blog: ~0 rows (приблизительно)
+-- Экспортируемые данные не выделены.
 
 -- Дамп структуры для таблица phototur.contacts
 CREATE TABLE IF NOT EXISTS `contacts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `vk` varchar(128) NOT NULL,
-  `instagram` varchar(128) NOT NULL,
-  `telegram` varchar(128) NOT NULL,
-  `email` varchar(128) NOT NULL,
-  `phone` varchar(128) NOT NULL,
-  `desc` varchar(256) NOT NULL,
+  `vk` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `instagram` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `telegram` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `email` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `phone` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `desc` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Дамп данных таблицы phototur.contacts: ~0 rows (приблизительно)
+-- Экспортируемые данные не выделены.
 
 -- Дамп структуры для таблица phototur.heads
 CREATE TABLE IF NOT EXISTS `heads` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) DEFAULT NULL,
-  `description` varchar(200) DEFAULT NULL,
-  `type_head` varchar(20) NOT NULL,
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `type_head` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `type_head` (`type_head`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Дамп данных таблицы phototur.heads: ~0 rows (приблизительно)
+-- Экспортируемые данные не выделены.
 
 -- Дамп структуры для таблица phototur.staffs
 CREATE TABLE IF NOT EXISTS `staffs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) DEFAULT NULL,
-  `description` varchar(128) DEFAULT NULL,
-  `vk` varchar(128) DEFAULT NULL,
-  `instagram` varchar(128) DEFAULT NULL,
-  `telegram` varchar(128) DEFAULT NULL,
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `description` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `vk` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `instagram` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `telegram` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Дамп данных таблицы phototur.staffs: ~0 rows (приблизительно)
+-- Экспортируемые данные не выделены.
 
 -- Дамп структуры для таблица phototur.stories
 CREATE TABLE IF NOT EXISTS `stories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `text` varchar(255) NOT NULL,
-  `pic` varchar(256) NOT NULL,
-  `bg_text` varchar(20) DEFAULT NULL,
-  `up_head` varchar(20) DEFAULT NULL,
-  `down_head` varchar(20) DEFAULT NULL,
-  `type_stories` varchar(20) NOT NULL,
+  `text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `pic` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `bg_text` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `up_head` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `down_head` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `type_stories` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `type_stories` (`type_stories`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Дамп данных таблицы phototur.stories: ~0 rows (приблизительно)
+-- Экспортируемые данные не выделены.
 
 -- Дамп структуры для таблица phototur.system
 CREATE TABLE IF NOT EXISTS `system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(20) DEFAULT NULL,
-  `icon` varchar(256) DEFAULT NULL,
-  `bg_pic` varchar(256) DEFAULT NULL,
-  `main_video` varchar(1024) DEFAULT NULL,
+  `title` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `icon` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `bg_pic` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `main_video` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Дамп данных таблицы phototur.system: ~0 rows (приблизительно)
-INSERT INTO `system` (`id`, `title`, `icon`, `bg_pic`, `main_video`) VALUES
-	(1, 'title1', 'icon', 'bg', 'video');
+-- Экспортируемые данные не выделены.
 
 -- Дамп структуры для таблица phototur.trips
 CREATE TABLE IF NOT EXISTS `trips` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `price` int(11) NOT NULL DEFAULT 0,
-  `short_desc` varchar(33) NOT NULL,
-  `description` text NOT NULL,
-  `photo_list` text NOT NULL,
+  `short_desc` varchar(33) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `photo_card` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `showed` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Дамп данных таблицы phototur.trips: ~2 rows (приблизительно)
-INSERT INTO `trips` (`id`, `name`, `price`, `short_desc`, `description`, `photo_list`, `showed`) VALUES
-	(1, '1', 2, '3', '4', '5', 0),
-	(2, '1', 2, '3', '4', '5', 1);
+-- Экспортируемые данные не выделены.
 
 -- Дамп структуры для таблица phototur.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `login` varchar(20) NOT NULL,
-  `name` varchar(20) DEFAULT NULL,
+  `login` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `is_admin` tinyint(4) DEFAULT 0,
   `is_delete` tinyint(4) DEFAULT 0,
   `lastdate` timestamp NULL DEFAULT NULL,
-  `password_hash` varchar(128) DEFAULT NULL,
-  `about` varchar(200) DEFAULT NULL,
+  `password_hash` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `about` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Дамп данных таблицы phototur.users: ~1 rows (приблизительно)
 INSERT INTO `users` (`id`, `login`, `name`, `is_admin`, `is_delete`, `lastdate`, `password_hash`, `about`) VALUES

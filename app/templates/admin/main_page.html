@@ -9,6 +9,9 @@
             <div class="form-group "><label class="control-label" for="main_desc">Описание в шапке:</label>
                 <input type="text" class="form-control" name="main_desc" value="{{ data.main_desc }}" maxlength="200">
             </div>
+
+            <hr/>
+
             <div class="form-group "><label class="control-label" for="footer_title">Заголовок в подвале:</label>
                 <input type="text" class="form-control" name="footer_title" value="{{ data.footer_title }}" maxlength="100">
             </div>
@@ -16,25 +19,8 @@
                 <input type="text" class="form-control" name="footer_desc" value="{{ data.footer_desc }}" maxlength="200">
             </div>
 
-            <hr>
+            <hr/>
 
-            <div class="form-group "><label class="control-label" for="story_bg">Фоновый текст истории:</label>
-                <input type="text" class="form-control" name="story_bg" value="{{ data.story_bg }}" maxlength="20">
-            </div>
-            <div class="form-group "><label class="control-label" for="story_up_text">Верхний текст истории:</label>
-                <input type="text" class="form-control" name="story_up_text" value="{{ data.story_up_text }}" maxlength="20">
-            </div>
-            <div class="form-group "><label class="control-label" for="story_down_text">Нижний текст истории:</label>
-                <input type="text" class="form-control" name="story_down_text" value="{{ data.story_down_text }}" maxlength="20">
-            </div>
-            <div class="form-group "><label class="control-label" for="story_text">Описание истории:</label>
-                <input type="text" class="form-control" name="story_text" value="{{ data.story_text }}" maxlength="255">
-            </div>
-            <div class="form-group "><label class="control-label" for="story_pic">Картинка истории:</label>
-                <input type="text" class="form-control" name="story_pic" value="{{ data.story_pic }}" maxlength="255">
-            </div>
-
-            <input type="hidden" name="type_head" value="{{ data.type_head }}">
             <p><input type="submit" value="Отправить" class="btn ripple btn-gradient btn-info"></p>
         </form>
     </div>

@@ -1,0 +1,12 @@
+<script src="{{ url_for('static', filename='admin/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: '#texteditor',
+    plugins: 'advlist link image lists autosave emoticons media preview autolink anchor table',
+    toolbar: 'undo redo | styles | bold italic |emoticons| alignleft aligncenter alignright alignjustify | outdent indent | preview',
+    language: 'ru',
+    mobile: {
+       menubar: true
+    }
+  });
+</script>

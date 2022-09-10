@@ -1,0 +1,82 @@
+                <input type="file" id="addImages">
+                <input type="hidden" name="photo_card" id="photo_card" value="">
+                <ul id="uploadImagesList">
+                    <li class="item template">
+                        <span class="img-wrap">
+                            <img src="image.jpg" >
+                        </span>
+                        <span class="delete-link" title="Удалить">Удалить</span>
+                    </li>
+                </ul>
+
+                <div class="clear"></div>
+            <script>
+            jQuery(document).ready(function ($) {
+
+                var maxFileSize = 2 * 1024 * 1024; // (байт) Максимальный размер файла (2мб)
+                var queue = {};
+                var form = $('form#uploadImages');
+                var imagesList = $('#uploadImagesList');
+
+                var itemPreviewTemplate = imagesList.find('.item.template').clone();
+                itemPreviewTemplate.removeClass('template');
+                imagesList.find('.item.template').remove();
+
+
+                $('#addImages').on('change', function () {
+                    var files = this.files;
+
+                    var file = files[0]
+
+                    if ( !file.type.match(/image\/(jpeg|jpg|png|gif)/) ) {
+                        alert( 'Фотография должна быть в формате jpg, png или gif' );
+                        exit;
+                    }
+
+                    if ( file.size > maxFileSize ) {
+                        alert( 'Размер фотографии не должен превышать 2 Мб' );
+                        exit;
+                    }
+                    preview(file);
+
+                    this.value = '';
+                });
+
+                function preview(file) {
+                    var reader = new FileReader();
+                    reader.addEventListener('load', function(event) {
+                        var img = document.createElement('img');
+                        var itemPreview = itemPreviewTemplate.clone();
+
+                        var photo_card = $('#photo_card');
+
+                        photo_card.val(event.target.result);
+
+                        itemPreview.find('.img-wrap img').attr('src', event.target.result);
+                        itemPreview.data('id', file.name);
+
+                        imagesList.find('.item').remove();
+                        imagesList.append(itemPreview);
+
+                        queue[file.name] = file;
+
+                    });
+                    reader.readAsDataURL(file);
+                }
+
+                // Удаление фотографий
+                imagesList.on('click', '.delete-link', function () {
+                    var item = $(this).closest('.item'),
+                        id = item.data('id');
+
+                    delete queue[id];
+
+                    item.remove();
+
+                    var photo_card = $('#photo_card');
+                    photo_card.val('event.target.result');
+                });
+            });
+
+            </script>
+

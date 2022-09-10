@@ -27,9 +27,9 @@
                       </ul>
                     </li>
                     <li class="ripple">
-                        <li><a href="topnav.html"><span class="fa fa-pencil-square-o"></span>Блог</a></li>
+                        <li><a href="{{ url_for("admin_blog") }}"><span class="fa fa-pencil-square-o"></span>Блог</a></li>
                         <li><a href="{{ url_for("admin_trips") }}"><span class="fa fa-plane"></span>Путешествия</a></li>
-                        <li><a href="{{ url_for("admin_trips") }}"><span class="fa fa-group"></span>Команда</a></li>
+                        <li><a href="{{ url_for("admin_commands") }}"><span class="fa fa-group"></span>Команда</a></li>
                     </li>
 
                     <li><a href="{{ url_for('logout') }}">Выход</a></li>

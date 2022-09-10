@@ -1,6 +1,5 @@
-from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from flask_login import UserMixin, LoginManager
+from flask_login import UserMixin
 from time import time
 from typing import Optional
 
@@ -12,10 +11,10 @@ from app import app, db, login
 
 class Staffs(db.Model):
     """
-        Класс для "нашей" команды
+    Класс для "нашей" команды
     """
 
-    __tablename__ = 'staffs'
+    __tablename__ = "staffs"
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     name: Optional[str] = db.Column(db.String(20))
     description: Optional[str] = db.Column(db.String(128))
@@ -24,14 +23,15 @@ class Staffs(db.Model):
     telegram: Optional[str] = db.Column(db.String(128))
 
     def __repr__(self):
-        return f'<Staffs {self.name}>'
+        return f"<Staffs {self.name}>"
 
 
 class Users(db.Model, UserMixin):
     """
-        Класс пользователей
+    Класс пользователей
     """
-    __tablename__ = 'users'
+
+    __tablename__ = "users"
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     login: Optional[str] = db.Column(db.String(20), unique=True)
     name: Optional[str] = db.Column(db.String(20), unique=True)
@@ -42,7 +42,7 @@ class Users(db.Model, UserMixin):
     about: Optional[str] = db.Column(db.String(200))
 
     def __repr__(self):
-        return f'<Users {self.login}>'
+        return f"<Users {self.login}>"
 
     def set_password(self, password: str) -> None:
         self.password_hash = generate_password_hash(password)
@@ -52,10 +52,10 @@ class Users(db.Model, UserMixin):
 
     def get_reset_password_token(self, expires_in=600) -> str:
         return jwt.encode(
-            {'reset_password': self.id, 'exp': time() + expires_in},
-            app.config['SECRET_KEY'],
-            algorithm='HS256',
-        ).decode('utf-8')
+            {"reset_password": self.id, "exp": time() + expires_in},
+            app.config["SECRET_KEY"],
+            algorithm="HS256",
+        ).decode("utf-8")
 
     def get_id(self) -> int:
         return self.id
@@ -63,26 +63,28 @@ class Users(db.Model, UserMixin):
 
 class Trips(db.Model):
     """
-        Класс путешествий
+    Класс путешествий
     """
-    __tablename__ = 'trips'
+
+    __tablename__ = "trips"
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     name: Optional[str] = db.Column(db.String(20), nullable=False)
     price: Optional[int] = db.Column(db.Integer, nullable=False)
     short_desc: Optional[str] = db.Column(db.String(33))
     description: Optional[str] = db.Column(db.String)
-    photo_list: Optional[str] = db.Column(db.String)
+    photo_card: Optional[str] = db.Column(db.String)
     showed: Optional[bool] = db.Column(db.Integer)
 
     def __repr__(self):
-        return f'<Trips {self.name}>'
+        return f"<Trips {self.name}>"
 
 
 class Contacts(db.Model):
     """
-        Класс для контактов
+    Класс для контактов
     """
-    __tablename__ = 'contacts'
+
+    __tablename__ = "contacts"
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     vk: Optional[str] = db.Column(db.String(128))
     instagram: Optional[str] = db.Column(db.String(128))
@@ -94,9 +96,10 @@ class Contacts(db.Model):
 
 class Blog(db.Model):
     """
-        Класс для блога
+    Класс для блога
     """
-    __tablename__ = 'blog'
+
+    __tablename__ = "blog"
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     id_user: Optional[int] = db.Column(db.Integer, db.ForeignKey("users.id"))
     short_text: Optional[str] = db.Column(db.String(136))
@@ -108,9 +111,10 @@ class Blog(db.Model):
 
 class Heads(db.Model):
     """
-        Класс для заголовков
+    Класс для заголовков
     """
-    __tablename__ = 'heads'
+
+    __tablename__ = "heads"
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     title: Optional[str] = db.Column(db.String(100))
     description: Optional[str] = db.Column(db.String(200))
@@ -119,9 +123,10 @@ class Heads(db.Model):
 
 class System(db.Model):
     """
-        Класс для общих данных
+    Класс для общих данных
     """
-    __tablename__ = 'system'
+
+    __tablename__ = "system"
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     title: Optional[str] = db.Column(db.String(20))
     icon: Optional[str] = db.Column(db.String(256))
@@ -131,9 +136,10 @@ class System(db.Model):
 
 class Stories(db.Model):
     """
-        Класс для историй
+    Класс для историй
     """
-    __tablename__ = 'stories'
+
+    __tablename__ = "stories"
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     text: Optional[str] = db.Column(db.String(255))
     pic: Optional[str] = db.Column(db.String(256))
