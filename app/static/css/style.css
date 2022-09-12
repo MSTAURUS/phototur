@@ -1924,30 +1924,3 @@ h1, h2, h3, h4, h5,
     background: rgba(239, 186, 108, 0.1);
     bottom: -20px;
     right: -20px; }
-
-/* image card */
-    #uploadImagesList {
-        list-style: none;
-        padding: 0;
-    }
-    #uploadImagesList .item {
-        float: left;
-        margin-right: 20px;
-        margin-bottom: 20px;
-    }
-    #uploadImagesList .item .img-wrap {
-        width: inherit;
-        display: block;
-        height: 150px;
-    }
-    #uploadImagesList .item .img-wrap img{
-        width: auto;
-        height: inherit;
-    }
-    #uploadImagesList .item .delete-link {
-        cursor: pointer;
-        display: block;
-    }
-    .clear {
-        clear: both;
-    }

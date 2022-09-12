@@ -24,7 +24,11 @@
             <tr>
                 <td>{{ loop.index }}</td>
                 {% for key, value in row_list.items() %}
-                <td>{{ row[key] }}</td>
+                    {% if value.split('~')[0] == 'Отображение' %}
+                    <td>{% if row[key] == 1 %}<span class="fa fa-check"></span>{% else %} <span class="fa fa-minus"></span> {% endif %}</td>
+                    {% else %}
+                    <td>{{ row[key] }}</td>
+                    {% endif %}
                 {% endfor %}
                 <td>
                     <center>

@@ -74,17 +74,6 @@ class TripsDAO:
             Trips.showed,
             Trips.id,
         )
-        # rows = self.trips.query.add_columns(
-        #     Trips.name,
-        #     Trips.price,
-        #     Trips.short_desc,
-        #     Trips.description,
-        #     Trips.photo_card,
-        #     Trips.showed,
-        #     Trips.id,
-        # )
-        #
-        # return [Trips(**row) for row in rows]
 
     def get_trip(self) -> List[Trips]:
         # rows = self.trips.query.filter_by(id=id_trip).first()
@@ -100,14 +89,14 @@ class TripsDAO:
         price: int,
         short_desc: str,
         description: str,
-        photo_list: str,
+        photo_card: str,
         showed: bool,
     ) -> None:
         self.trips.name = name
         self.trips.price = price
         self.trips.short_desc = short_desc
         self.trips.description = description
-        self.trips.photo_list = photo_list
+        self.trips.photo_card = photo_card
         self.trips.showed = showed
 
         # Если записей нет, то нужно создать

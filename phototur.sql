@@ -107,8 +107,8 @@ CREATE TABLE IF NOT EXISTS `trips` (
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `price` int(11) NOT NULL DEFAULT 0,
   `short_desc` varchar(33) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `photo_card` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `photo_card` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `showed` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

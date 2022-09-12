@@ -6591,3 +6591,36 @@ ul li a:focus {
 	color: #bd5a35;
 	text-decoration:underline;
 }
+
+/* image card */
+    #uploadImagesList {
+        list-style: none;
+        padding: 0;
+    }
+    #uploadImagesList .item {
+        float: left;
+        margin-right: 20px;
+    }
+    #uploadImagesList .item .img-wrap {
+        width: inherit;
+        height: 150px;
+    }
+    #uploadImagesList .item .img-wrap img{
+        width: inherit;
+        min-height: 465px;
+        width: 347px;
+        display: block;
+    }
+    #uploadImagesList .item .delete-link {
+        cursor: pointer;
+        display: block;
+    }
+    .clear {
+        clear: both;
+    }
+
+.qqq{
+    background-color: #fff;
+    min-height: 485px;
+    max-width: 347px;
+}

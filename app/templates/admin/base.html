@@ -35,7 +35,7 @@
                 <span class="bottom"></span>
               </div>
 
-              <a href="index" class="navbar-brand">{% if title %}{{title}}{%else%}Админ-панель{%endif%}</a>
+              <a href="index" class="navbar-brand">{{ title if title else 'Админ-панель' }}</a>
             </div>
           </div>
         </nav>

@@ -1,26 +1,34 @@
-                <input type="file" id="addImages">
-                <input type="hidden" name="photo_card" id="photo_card" value="">
+             <div class="qqq">
+                <input type="file" id="addImages" name="addImages">
+                <input type="hidden" name="photo_card" id="photo_card" value="{{ travels.photo_card if travels.photo_card }}">
                 <ul id="uploadImagesList">
                     <li class="item template">
                         <span class="img-wrap">
-                            <img src="image.jpg" >
+                            <img src="{{ travels.photo_card if travels.photo_card}}" >
                         </span>
                         <span class="delete-link" title="Удалить">Удалить</span>
                     </li>
                 </ul>
 
                 <div class="clear"></div>
+             </div>
             <script>
             jQuery(document).ready(function ($) {
 
-                var maxFileSize = 2 * 1024 * 1024; // (байт) Максимальный размер файла (2мб)
+                var maxFileSize = 200 * 1024; // (байт) Максимальный размер файла (200кб)
                 var queue = {};
                 var form = $('form#uploadImages');
                 var imagesList = $('#uploadImagesList');
 
                 var itemPreviewTemplate = imagesList.find('.item.template').clone();
                 itemPreviewTemplate.removeClass('template');
-                imagesList.find('.item.template').remove();
+                //imagesList.find('.item.template').remove();
+
+                photo_card = $('#photo_card').val();
+
+                if (photo_card == '') {
+                    imagesList.find('.item.template').remove();
+                }
 
 
                 $('#addImages').on('change', function () {
@@ -74,7 +82,7 @@
                     item.remove();
 
                     var photo_card = $('#photo_card');
-                    photo_card.val('event.target.result');
+                    photo_card.val('');
                 });
             });
 

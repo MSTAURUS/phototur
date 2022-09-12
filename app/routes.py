@@ -231,8 +231,14 @@ def admin_trip_del(id_trip):
 def admin_trip_add():
     travels: dao = dao.TripsDAO()
 
-    flash("Запись удалена.", "success")
-    return redirect(url_for("admin_trips"))
+    trip: Dict = {"id": 0, "name": '', "price": '0'}
+    # data["short_desc"] =
+    # data["description"] =
+    # data["photo_card"] =
+    # data["showed"] =
+
+    return render_template("admin/trip_form.html", travels=trip)
+
 
 @exception
 @app.route("/admin/trip/edit/<int:id_trip>", methods=["POST"], strict_slashes=False)
