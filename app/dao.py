@@ -1,5 +1,5 @@
 from app import db
-from app.models import Users, System, Trips, Heads, Stories, Blog, Contacts
+from app.models import Users, System, Trips, Heads, Stories, Blog, Contacts, Staff
 from datetime import datetime
 from typing import List
 
@@ -31,7 +31,9 @@ class UserDAO:
 
     def check_login(self, login: str, password: str) -> bool:
         usr = self.get_by_login(login)
-        check_pwd = usr.check_password(password)
+        check_pwd: bool = False
+        if usr:
+            check_pwd = usr.check_password(password)
         return bool(check_pwd and usr)
 
 
@@ -113,7 +115,7 @@ class HeadsDAO:
 
     def get_head(self) -> List[Heads]:
         return self.head
-    
+
     def save(self, title: str, description: str, type_head: str) -> None:
         self.head.title = title
         self.head.description = description
@@ -143,7 +145,15 @@ class StoriesDAO:
     def get_story(self) -> List[Stories]:
         return self.story
 
-    def save(self, text: str, bg_text: str, up_head: str, down_head: str, pic: str, type_stories: str):
+    def save(
+        self,
+        text: str,
+        bg_text: str,
+        up_head: str,
+        down_head: str,
+        pic: str,
+        type_stories: str,
+    ):
         self.story.text = text
         self.story.bg_text = bg_text
         self.story.up_head = up_head
@@ -165,7 +175,9 @@ class ContactsDAO:
     def get_contacts(self) -> List[Contacts]:
         return self.contacts
 
-    def save(self, vk: str, instagram: str, telegram: str, email: str, phone: str, desc: str):
+    def save(
+        self, vk: str, instagram: str, telegram: str, email: str, phone: str, desc: str
+    ):
         self.contacts.vk = vk
         self.contacts.instagram = instagram
         self.contacts.telegram = telegram
@@ -176,4 +188,51 @@ class ContactsDAO:
         if not self.contacts.id:
             db.session.add(self.contacts)
 
+        db.session.commit()
+
+
+class StaffDAO:
+    def __init__(self, id_empl: int = None):
+        if id_empl:
+            self.empl = Staff.query.filter_by(id=id_empl).first()
+        else:
+            self.empl = Staff()
+
+    def get_staff(self) -> List[Staff]:
+        return self.empl.query.add_columns(
+            Staff.name,
+            Staff.description,
+            Staff.vk,
+            Staff.instagram,
+            Staff.telegram,
+            Staff.id,
+            Staff.photo_card,
+        )
+
+    def get_empl(self) -> List[Staff]:
+        return self.empl
+
+    def delete_empl(self) -> None:
+        db.session.delete(self.empl)
+        db.session.commit()
+
+    def save(
+        self,
+        name: str,
+        description: str,
+        vk: str,
+        instagram: str,
+        telegram: str,
+        photo_card: str,
+    ) -> None:
+        self.empl.name = name
+        self.empl.description = description
+        self.empl.vk = vk
+        self.empl.instagram = instagram
+        self.empl.telegram = telegram
+        self.empl.photo_card = photo_card
+
+        # Если записей нет, то нужно создать
+        if self.empl.id is None:
+            db.session.add(self.empl)
         db.session.commit()
