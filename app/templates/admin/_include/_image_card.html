@@ -1,10 +1,10 @@
              <div class="qqq">
                 <input type="file" id="addImages" name="addImages">
-                <input type="hidden" name="photo_card" id="photo_card" value="{{ travels.photo_card if travels.photo_card }}">
+                <input type="hidden" name="photo_card" id="photo_card" value="{{ photo_card if photo_card }}">
                 <ul id="uploadImagesList">
                     <li class="item template">
                         <span class="img-wrap">
-                            <img src="{{ travels.photo_card if travels.photo_card}}" >
+                            <img src="{{ photo_card if photo_card}}" >
                         </span>
                         <span class="delete-link" title="Удалить">Удалить</span>
                     </li>

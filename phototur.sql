@@ -61,8 +61,8 @@ CREATE TABLE IF NOT EXISTS `heads` (
 
 -- Экспортируемые данные не выделены.
 
--- Дамп структуры для таблица phototur.staffs
-CREATE TABLE IF NOT EXISTS `staffs` (
+-- Дамп структуры для таблица phototur.staff
+CREATE TABLE IF NOT EXISTS `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `description` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,

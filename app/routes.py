@@ -15,7 +15,7 @@ from utils.utils import exception, stripex
 from typing import Dict, List
 from datetime import datetime
 
-from app.models import Trips, Heads, System, Stories, Contacts
+from app.models import Trips, Heads, System, Stories, Contacts, Staff
 
 
 @app.before_request
@@ -86,8 +86,10 @@ def post_login():
 
     if user_dao.check_login(username, password):
         login_user(user_dao.get_by_login(username), remember=True)
+        return redirect(url_for("admin"))
 
-    return redirect(url_for("admin"))
+    flash("Ошибка авторизации", "error")
+    return redirect(url_for("index"))
 
 
 @exception
@@ -171,10 +173,83 @@ def admin_system_save():
 
 
 @exception
-@app.route("/admin/commands", methods=["GET"], strict_slashes=False)
+@app.route("/admin/staff", methods=["GET"], strict_slashes=False)
 @login_required
-def admin_commands():
-    pass
+def admin_staff():
+    row_list: Dict[int, str] = {
+        1: "Имя~80",
+        2: "Описание~250",
+    }
+
+    staff: dao = dao.StaffDAO()
+
+    staff_list: List[Staff] = staff.get_staff()
+
+    return render_template(
+        "admin/staff.html",
+        models=staff_list,
+        row_list=row_list,
+        filter=True,
+        add=True,
+        adding="/admin/empl/add",
+        editing="/admin/empl/",
+        deleting="/admin/empl/del/",
+    )
+
+
+@exception
+@app.route("/admin/empl/add", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_empl_add():
+    staff: dao = dao.StaffDAO()
+
+    empl: Dict = {"id": 0, "name": ""}
+    # data["short_desc"] =
+    # data["description"] =
+    # data["photo_card"] =
+    # data["showed"] =
+
+    return render_template("admin/empl_form.html", empl=empl)
+
+
+@exception
+@app.route("/admin/empl/del/<int:id_empl>", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_empl_del(id_empl):
+    empl: dao = dao.StaffDAO(id_empl)
+
+    empl.delete_empl()
+    flash("Запись удалена.", "success")
+    return redirect(url_for("admin_staff"))
+
+
+@exception
+@app.route("/admin/empl/edit/<int:id_empl>", methods=["POST"], strict_slashes=False)
+@login_required
+def admin_empl_edit(id_empl):
+    empl: dao = dao.StaffDAO(id_empl)
+
+    name: str = stripex(request.form.get("name"))
+    description: str = stripex(request.form.get("description"))
+    vk: str = stripex(request.form.get("vk"))
+    instagram: str = stripex(request.form.get("instagram"))
+    telegram: str = stripex(request.form.get("telegram"))
+    photo_card: str = stripex(request.form.get("photo_card"))
+
+    empl.save(name, description, vk, instagram, telegram, photo_card)
+
+    flash("Запись сохранена.", "success")
+    return redirect(url_for("admin_staff"))
+
+
+@exception
+@app.route("/admin/empl/<int:id_empl>", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_empl_show(id_empl):
+    staff: dao = dao.StaffDAO(id_empl)
+
+    empl: List[Staff] = staff.get_empl()
+    return render_template("admin/empl_form.html", empl=empl)
 
 
 @exception
@@ -231,7 +306,7 @@ def admin_trip_del(id_trip):
 def admin_trip_add():
     travels: dao = dao.TripsDAO()
 
-    trip: Dict = {"id": 0, "name": '', "price": '0'}
+    trip: Dict = {"id": 0, "name": "", "price": "0"}
     # data["short_desc"] =
     # data["description"] =
     # data["photo_card"] =
@@ -335,7 +410,9 @@ def admin_page_about():
 
     title = "О нас"
 
-    return render_template("admin/about_page.html", system_info=system_info, title=title, data=data)
+    return render_template(
+        "admin/about_page.html", system_info=system_info, title=title, data=data
+    )
 
 
 @exception
@@ -384,7 +461,9 @@ def admin_page_trips():
 
     title = "Путешествия"
 
-    return render_template("admin/trips_page.html", system_info=system_info, title=title, data=data)
+    return render_template(
+        "admin/trips_page.html", system_info=system_info, title=title, data=data
+    )
 
 
 @exception
@@ -408,7 +487,7 @@ def admin_page_trips_save():
 
     # Сохранение заголовка
     stories_query: dao = dao.StoriesDAO("trips")
-    stories_query.save('', trips_bg, trips_up_text, trips_down_text, '', "trips")
+    stories_query.save("", trips_bg, trips_up_text, trips_down_text, "", "trips")
 
     flash("Сохранено", "success")
     return redirect(url_for("admin_page_trips"))
@@ -461,7 +540,9 @@ def admin_page_contacts():
     data["desc"] = contacts_list.desc
 
     title = "Контакты"
-    return render_template("admin/contacts_page.html", system_info=system_info, title=title, data=data)
+    return render_template(
+        "admin/contacts_page.html", system_info=system_info, title=title, data=data
+    )
 
 
 @exception

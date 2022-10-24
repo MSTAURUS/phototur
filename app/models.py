@@ -9,18 +9,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import app, db, login
 
 
-class Staffs(db.Model):
+class Staff(db.Model):
     """
     Класс для "нашей" команды
     """
 
-    __tablename__ = "staffs"
+    __tablename__ = "staff"
     id: Optional[int] = db.Column(db.Integer, primary_key=True)
     name: Optional[str] = db.Column(db.String(20))
     description: Optional[str] = db.Column(db.String(128))
     vk: Optional[str] = db.Column(db.String(128))
     instagram: Optional[str] = db.Column(db.String(128))
     telegram: Optional[str] = db.Column(db.String(128))
+    photo_card: Optional[str] = db.Column(db.String)
 
     def __repr__(self):
         return f"<Staffs {self.name}>"

@@ -1,0 +1,34 @@
+{% extends "admin/base.html" %}
+
+{% block app_content %}
+{% include "admin/_include/_texteditor.html" ignore missing %}
+    <div class="container col-md-8 order-md-1">
+        <form action="{{ url_for('admin_empl_edit', id_empl=empl.id) }}" method="post">
+            <div class="form-group "><label class="control-label" for="name">Имя:</label>
+                <input type="text" class="form-control" name="name" autocomplete="False" value="{{ empl.name }}">
+            </div>
+            <div class="form-group "><label class="control-label" for="description">Описание:</label>
+                <input type="text" class="form-control" maxlength="128" autocomplete="False" name="description" value="{{ empl.description }}">
+            </div>
+            <div class="form-group "><label class="control-label" for="photo_card">Карточка:</label>
+            {% set photo_card = empl.photo_card%}
+            {% include "admin/_include/_image_card.html" ignore missing %}
+            </div>
+
+            <div class="form-group "><label class="control-label" for="vk">VK:</label>
+                <input type="text" class="form-control"  name="vk" value="{{empl.vk}}">
+            </div>
+            <div class="form-group "><label class="control-label" for="instagram">Instagram:</label>
+                <input type="text" class="form-control"  name="instagram" value="{{empl.instagram}}">
+            </div>
+            <div class="form-group "><label class="control-label" for="telegram">Telegram:</label>
+                <input type="text" class="form-control"  name="telegram" value="{{empl.telegram}}">
+            </div>
+
+            <input type="hidden" name="id" value="{{ empl.id }}">
+
+            <p><input type="submit" value="Отправить" class="btn ripple btn-gradient btn-info"></p>
+        </form>
+    </div>
+
+{% endblock %}
