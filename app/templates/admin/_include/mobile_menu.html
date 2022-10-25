@@ -2,24 +2,22 @@
         <div class="mimin-mobile-menu-list">
             <div class="col-md-12 sub-mimin-mobile-menu-list animated fadeInLeft">
                 <ul class="nav nav-list">
+                    <li><a href="{{ url_for("admin") }}"><span class="fa-home fa"></span>Главная</a></li>
+                    <li class="ripple"><a href="{{ url_for("admin_system") }}"><span class="fa fa-cogs"></span>Системные настройки</a></li>
+                    <li><a href="{{ url_for("admin_blog") }}"><span class="fa fa-pencil-square-o"></span>Блог</a></li>
+                    <li><a href="{{ url_for("admin_trips") }}"><span class="fa fa-plane"></span>Путешествия</a></li>
+                    <li><a href="{{ url_for("admin_staff") }}"><span class="fa fa-group"></span>Команда</a></li>
                     <li class="active ripple">
                       <a class="tree-toggle nav-header">
-                        <span class="fa-home fa"></span>Dashboard
+                        <span class="fa-diamond fa"></span> Страницы
                         <span class="fa-angle-right fa right-arrow text-right"></span>
                       </a>
                       <ul class="nav nav-list tree">
-                          <li><a href="dashboard-v1.html">Dashboard v.1</a></li>
-                          <li><a href="dashboard-v2.html">Dashboard v.2</a></li>
-                      </ul>
-                    </li>
-                    <li class="ripple">
-                      <a class="tree-toggle nav-header">
-                        <span class="fa-diamond fa"></span>Layout
-                        <span class="fa-angle-right fa right-arrow text-right"></span>
-                      </a>
-                      <ul class="nav nav-list tree">
-                        <li><a href="topnav.html">Top Navigation</a></li>
-                        <li><a href="boxed.html">Boxed</a></li>
+                        <li><a href="{{ url_for("admin_page_main") }}">Главная</a></li>
+                        <li><a href="{{ url_for("admin_page_about") }}">О нас</a></li>
+                        <li><a href="{{ url_for("admin_page_trips") }}">Путешествия</a></li>
+                        <li><a href="{{ url_for("admin_page_blog") }}">Блог</a></li>
+                        <li><a href="{{ url_for("admin_page_contacts") }}">Контакты</a></li>
                       </ul>
                     </li>
                     <li><a href="{{ url_for('logout') }}">Выход</a></li>
