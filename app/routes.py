@@ -44,7 +44,17 @@ def favicon():
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html")
+    system = get_system_info()
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO("main_head")
+    head_info: List[Heads] = head_query.get_head()
+
+    # нижний текст на картинке
+    footer_query: dao = dao.HeadsDAO("main_footer")
+    footer_info: List[Heads] = footer_query.get_head()
+
+    return render_template("index.tmpl", system=system, head_info=head_info, footer_info=footer_info)
 
 
 @exception
@@ -573,3 +583,46 @@ def admin_page_contacts_save():
 
     flash("Сохранено", "success")
     return redirect(url_for("admin_page_contacts"))
+
+
+@exception
+@app.route("/admin/story/<name>", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_story(name):
+    """
+    Настройка страниц историй "наша история", "наша цель"
+    """
+
+    system_info: List = get_system_info()
+
+    # верхний текст на картинке
+    story_query: dao = dao.StoriesDAO(name)
+    story_info: List[Stories] = story_query.get_story()
+
+    if not story_info.type_stories:
+        story_info.type_stories = name
+
+    return render_template(
+        "admin/story.html", system_info=system_info,  story_info=story_info
+    )
+
+
+@exception
+@app.route("/admin/story/<name>", methods=["POST"], strict_slashes=False)
+@login_required
+def admin_story_save(name):
+    """
+    Сохранение историй
+    """
+
+    bg_text: str = stripex(request.form.get("bg_text"))
+    up_head: str = stripex(request.form.get("up_head"))
+    down_head: str = stripex(request.form.get("down_head"))
+    text: str = stripex(request.form.get("text"))
+    up_head: str = stripex(request.form.get("up_head"))
+
+    story_query: dao = dao.StoriesDAO(name)
+    story_query.save(text=text, bg_text=bg_text, up_head=up_head, down_head=down_head, pic='pic', type_stories=name)
+
+    flash("Сохранено", "success")
+    return redirect(url_for("admin_story", name=name))

@@ -26,6 +26,16 @@
                       </ul>
                     </li>
                     <li class="ripple">
+                      <a class="tree-toggle nav-header">
+                        <span class="fa-file-text-o fa"></span> Истории
+                        <span class="fa-angle-right fa right-arrow text-right"></span>
+                      </a>
+                      <ul class="nav nav-list tree">
+                        <li><a href="{{ url_for("admin_story", name="our_history") }}">Наша история</a></li>
+                        <li><a href="{{ url_for("admin_story", name="our_target") }}">Наша цель</a></li>
+                      </ul>
+                    </li>
+                    <li class="ripple">
                         <li><a href="{{ url_for("admin_blog") }}"><span class="fa fa-pencil-square-o"></span>Блог</a></li>
                         <li><a href="{{ url_for("admin_trips") }}"><span class="fa fa-plane"></span>Путешествия</a></li>
                         <li><a href="{{ url_for("admin_staff") }}"><span class="fa fa-group"></span>Команда</a></li>
