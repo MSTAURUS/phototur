@@ -1,0 +1,11 @@
+                        <div class="col-9  text-right">
+                            <span class="d-inline-block d-lg-none"><a href="#" class="text-white site-menu-toggle js-menu-toggle py-5 text-white"><span class="icon-menu h3 text-black"></span></a></span>
+                            <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
+                                <ul class="site-menu main-menu js-clone-nav ml-auto ">
+                                    <li {% if head_info.type_head=='main_head' %}class="active"{% endif%}><a href="{{ url_for('index') }}" class="nav-link">Главная</a></li>
+                                    <li {% if head_info.type_head=='about_head' %}class="active"{% endif%}><a href="{{ url_for('about') }}" class="nav-link">О нас</a></li>
+                                    <li {% if head_info.type_head=='trips_head' %}class="active"{% endif%}><a href="{{ url_for('travels') }}" class="nav-link">Путешествия</a></li>
+                                    <li {% if head_info.type_head=='contacts_head' %}class="active"{% endif%}><a href="{{ url_for('contact') }}" class="nav-link">Контакты</a></li>
+                                </ul>
+                            </nav>
+                        </div>

@@ -1,0 +1,31 @@
+{% extends "base.tmpl" %}
+
+{% block content %}
+    {% block blog %}
+    {% if blog %}
+    <div class="site-section">
+        <div class="container">
+            <div class="row">
+                {% for post in posts %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="post-entry-1 h-100">
+                        <img src="{{ post.pic }}" alt="Image" class="img-fluid">
+                        <div class="post-entry-1-contents">
+                            <h2><a href="single.html">{{ post.caption }}</a></h2>
+                            <span class="meta d-inline-block mb-3">{{ post.lastdate }}</span>
+                            <p>{{ post.short_text}}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endblock %}
+
+    {% endblock %}
+
+{% endblock %}

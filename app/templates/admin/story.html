@@ -12,10 +12,15 @@
             <div class="form-group "><label class="control-label" for="down_head">Текст снизу:</label>
                 <input type="text" class="form-control" name="down_head" value="{{ story_info.down_head }}">
             </div>
-            <div class="form-group "><label class="control-label" for="text">Описание:</label>
+            {% if story_info.type_stories != 'staff' %}
+            <div class="form-group "><label class="control-label" for="text">Описание (255 символов):</label>
                 <input type="text" class="form-control" name="text" value="{{ story_info.text }}">
             </div>
-
+            <div class="form-group "><label class="control-label" for="photo_card">Карточка (900*935):</label>
+            {% set photo_card = story_info.pic%}
+            {% include "admin/_include/_image_card.html" ignore missing %}
+            </div>
+            {% endif %}
             <p><input type="submit" value="Отправить" class="btn ripple btn-gradient btn-info"></p>
         </form>
     </div>

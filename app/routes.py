@@ -54,7 +54,42 @@ def index():
     footer_query: dao = dao.HeadsDAO("main_footer")
     footer_info: List[Heads] = footer_query.get_head()
 
-    return render_template("index.tmpl", system=system, head_info=head_info, footer_info=footer_info)
+    # наша история
+    our_history_query: dao = dao.StoriesDAO("our_history")
+    our_history_info: List[Stories] = our_history_query.get_story()
+
+    # наши цели
+    our_mission_query: dao = dao.StoriesDAO("our_mission")
+    our_mission_info: List[Stories] = our_mission_query.get_story()
+
+    # шапка путешествий
+    trips_head_query: dao = dao.StoriesDAO("trips")
+    trips_head_info: List[Stories] = trips_head_query.get_story()
+
+    # сами путешествия списком
+    trips_query: dao = dao.TripsDAO()
+    trips_info: List[Trips] = trips_query.get_trips()
+
+    # шапка сотрудников
+    staff_head_query: dao = dao.StoriesDAO("staff")
+    staff_head_info: List[Stories] = staff_head_query.get_story()
+
+    # сотрудники списком
+    staffs_query: dao = dao.StaffDAO()
+    staffs_info: List[Staff] = staffs_query.get_staff()
+
+    return render_template(
+        "index.tmpl",
+        system=system,
+        head_info=head_info,
+        our_history=our_history_info,
+        our_mission=our_mission_info,
+        footer_info=footer_info,
+        trips_head=trips_head_info,
+        trips=trips_info,
+        staff_head=staff_head_info,
+        staffs=staffs_info,
+    )
 
 
 @exception
@@ -105,18 +140,111 @@ def post_login():
 @exception
 @app.route("/about", methods=["GET"])
 def about():
-    return "about"
+    system = get_system_info()
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO("about_head")
+    head_info: List[Heads] = head_query.get_head()
+
+    # нижний текст на картинке
+    footer_query: dao = dao.HeadsDAO("main_footer")
+    footer_info: List[Heads] = footer_query.get_head()
+
+    # наша история
+    our_history_query: dao = dao.StoriesDAO("our_history")
+    our_history_info: List[Stories] = our_history_query.get_story()
+
+    # наши цели
+    our_mission_query: dao = dao.StoriesDAO("our_mission")
+    our_mission_info: List[Stories] = our_mission_query.get_story()
+
+    # шапка сотрудников
+    staff_head_query: dao = dao.StoriesDAO("staff")
+    staff_head_info: List[Stories] = staff_head_query.get_story()
+
+    # сотрудники списком
+    staffs_query: dao = dao.StaffDAO()
+    staffs_info: List[Staff] = staffs_query.get_staff()
+
+    return render_template(
+        "about.tmpl",
+        system=system,
+        head_info=head_info,
+        our_history=our_history_info,
+        our_mission=our_mission_info,
+        footer_info=footer_info,
+        staff_head=staff_head_info,
+        staffs=staffs_info,
+    )
 
 
 @exception
-@app.route("/trips", methods=["GET"])
-def trips():
-    return "trips"
+@app.route("/travels", methods=["GET"])
+def travels():
+    system = get_system_info()
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO("trips_head")
+    head_info: List[Heads] = head_query.get_head()
+
+    # нижний текст на картинке
+    footer_query: dao = dao.HeadsDAO("main_footer")
+    footer_info: List[Heads] = footer_query.get_head()
+
+    # наша история
+    our_history_query: dao = dao.StoriesDAO("our_history")
+    our_history_info: List[Stories] = our_history_query.get_story()
+
+    # шапка путешествий
+    trips_head_query: dao = dao.StoriesDAO("trips")
+    trips_head_info: List[Stories] = trips_head_query.get_story()
+
+    # сами путешествия списком
+    trips_query: dao = dao.TripsDAO()
+    trips_info: List[Trips] = trips_query.get_trips()
+
+    return render_template(
+        "travels.tmpl",
+        system=system,
+        head_info=head_info,
+        our_history=our_history_info,
+        footer_info=footer_info,
+        trips_head=trips_head_info,
+        trips=trips_info,
+    )
+
+
+@app.route("/travel/<int:id>", methods=["GET"])
+def travel(id):
+    return "trip"
 
 
 @app.route("/contact", methods=["GET"])
 def contact():
-    return "contact"
+    system = get_system_info()
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO("contacts_head")
+    head_info: List[Heads] = head_query.get_head()
+
+    # шапка контактов
+    contact_head_query: dao = dao.StoriesDAO("contacts")
+    contact_head_info: List[Stories] = contact_head_query.get_story()
+
+    # получим контакты
+    contacts: dao = dao.ContactsDAO()
+    contacts_data: List[Contacts] = contacts.get_contacts()
+
+    phones: List = contacts_data.phone.split(";")
+
+    return render_template(
+        "contacts.tmpl",
+        system=system,
+        head_info=head_info,
+        contact_head=contact_head_info,
+        contacts=contacts_data,
+        phones=phones
+    )
 
 
 @exception
@@ -538,6 +666,14 @@ def admin_page_contacts():
     data["contacts_title"] = contacts_info.title
     data["contacts_desc"] = contacts_info.description
 
+    # оформление
+    contacts_story_query: dao = dao.StoriesDAO("contacts")
+    contacts_story: List[Stories] = contacts_story_query.get_story()
+
+    data["contacts_bg"] = contacts_story.bg_text
+    data["contacts_up_text"] = contacts_story.up_head
+    data["contacts_down_text"] = contacts_story.down_head
+
     # контакты
     contacts: dao = dao.ContactsDAO()
     contacts_list: List[Contacts] = contacts.get_contacts()
@@ -573,6 +709,10 @@ def admin_page_contacts_save():
     phone: str = stripex(request.form.get("phone"))
     desc: str = stripex(request.form.get("desc"))
 
+    contacts_bg: str = stripex(request.form.get("contacts_bg"))
+    contacts_up_text: str = stripex(request.form.get("contacts_up_text"))
+    contacts_down_text: str = stripex(request.form.get("contacts_down_text"))
+
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("contacts_head")
     head_query.save(contacts_title, contacts_desc, "contacts_head")
@@ -580,6 +720,10 @@ def admin_page_contacts_save():
     # контакты
     contacts: dao = dao.ContactsDAO()
     contacts.save(vk, instagram, telegram, email, phone, desc)
+
+    # оформление
+    contacts_story: dao = dao.StoriesDAO("contacts")
+    contacts_story.save(None, contacts_bg, contacts_up_text, contacts_down_text, None, "contacts")
 
     flash("Сохранено", "success")
     return redirect(url_for("admin_page_contacts"))
@@ -603,7 +747,7 @@ def admin_story(name):
         story_info.type_stories = name
 
     return render_template(
-        "admin/story.html", system_info=system_info,  story_info=story_info
+        "admin/story.html", system_info=system_info, story_info=story_info
     )
 
 
@@ -619,10 +763,17 @@ def admin_story_save(name):
     up_head: str = stripex(request.form.get("up_head"))
     down_head: str = stripex(request.form.get("down_head"))
     text: str = stripex(request.form.get("text"))
-    up_head: str = stripex(request.form.get("up_head"))
+    photo_card: str = stripex(request.form.get("photo_card"))
 
     story_query: dao = dao.StoriesDAO(name)
-    story_query.save(text=text, bg_text=bg_text, up_head=up_head, down_head=down_head, pic='pic', type_stories=name)
+    story_query.save(
+        text=text,
+        bg_text=bg_text,
+        up_head=up_head,
+        down_head=down_head,
+        pic=photo_card,
+        type_stories=name,
+    )
 
     flash("Сохранено", "success")
     return redirect(url_for("admin_story", name=name))

@@ -6605,12 +6605,19 @@ ul li a:focus {
         width: inherit;
         height: 150px;
     }
-    #uploadImagesList .item .img-wrap img{
+    #uploadImagesList-l .item .img-wrap img{
         width: inherit;
         min-height: 465px;
         width: 347px;
         display: block;
     }
+
+    #uploadImagesList .item .img-wrap img{
+        width: inherit;
+        width: 347px;
+        display: block;
+    }
+
     #uploadImagesList .item .delete-link {
         cursor: pointer;
         display: block;
@@ -6619,8 +6626,13 @@ ul li a:focus {
         clear: both;
     }
 
-.qqq{
+.uploadimgbox-l{
     background-color: #fff;
     min-height: 485px;
+    max-width: 347px;
+}
+
+.uploadimgbox{
+    background-color: #fff;
     max-width: 347px;
 }

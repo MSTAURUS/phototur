@@ -1,4 +1,4 @@
-             <div class="qqq">
+             <div class="uploadimgbox">
                 <input type="file" id="addImages" name="addImages">
                 <input type="hidden" name="photo_card" id="photo_card" value="{{ photo_card if photo_card }}">
                 <ul id="uploadImagesList">
@@ -15,7 +15,7 @@
             <script>
             jQuery(document).ready(function ($) {
 
-                var maxFileSize = 200 * 1024; // (байт) Максимальный размер файла (200кб)
+                var maxFileSize = 250 * 1024; // (байт) Максимальный размер файла (250кб)
                 var queue = {};
                 var form = $('form#uploadImages');
                 var imagesList = $('#uploadImagesList');
@@ -42,7 +42,7 @@
                     }
 
                     if ( file.size > maxFileSize ) {
-                        alert( 'Размер фотографии не должен превышать 2 Мб' );
+                        alert( 'Размер фотографии не должен превышать 250 кб' );
                         exit;
                     }
                     preview(file);
