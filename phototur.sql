@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
 -- Хост:                         127.0.0.1
--- Версия сервера:               10.4.21-MariaDB - Source distribution
--- Операционная система:         Linux
+-- Версия сервера:               5.7.25 - MySQL Community Server (GPL)
+-- Операционная система:         Win64
 -- HeidiSQL Версия:              12.0.0.6468
 -- --------------------------------------------------------
 
@@ -22,11 +22,12 @@ USE `phototur`;
 -- Дамп структуры для таблица phototur.blog
 CREATE TABLE IF NOT EXISTS `blog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_user` int(11) NOT NULL DEFAULT 0,
+  `id_user` int(11) NOT NULL DEFAULT '0',
+  `caption` varchar(30) NOT NULL,
   `short_text` varchar(136) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `long_text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `pic` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
-  `showed` tinyint(4) NOT NULL DEFAULT 0,
+  `showed` tinyint(4) NOT NULL DEFAULT '0',
   `lastdate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `FK_USER` (`id_user`),
@@ -69,6 +70,7 @@ CREATE TABLE IF NOT EXISTS `staff` (
   `vk` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `instagram` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `telegram` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `photo_card` longtext,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -77,12 +79,12 @@ CREATE TABLE IF NOT EXISTS `staff` (
 -- Дамп структуры для таблица phototur.stories
 CREATE TABLE IF NOT EXISTS `stories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `pic` LONGTEXT NOT NULL COLLATE utf8mb4_bin,
-  `bg_text` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `up_head` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `down_head` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `type_stories` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `pic` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `bg_text` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `up_head` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `down_head` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `type_stories` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `type_stories` (`type_stories`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
