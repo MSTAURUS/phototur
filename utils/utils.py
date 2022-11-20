@@ -1,7 +1,9 @@
 from functools import wraps
 from flask import redirect, url_for, flash
 import logging
-from typing import List
+from typing import Dict, List
+
+from .vkrandomphoto import VKRandomPhoto
 
 
 def exception(f):
@@ -21,9 +23,11 @@ def stripex(value):
     return value.strip() if value else value
 
 
-def get_photo_vk(url: str) -> List[str]:
-    pass
-
-
 def get_photo_instagram(url: str) -> List[str]:
     pass
+
+
+def get_photo_vk(url: str) -> List[Dict]:
+    vk_photo: VKRandomPhoto = VKRandomPhoto(url=url)
+
+    return vk_photo.get_random_photo(6)

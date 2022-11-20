@@ -1935,10 +1935,33 @@ h1, h2, h3, h4, h5,
     content: "\20BD";
 }
 
-.social_29128 p {
-  display: inline-block;
+.icon_contacts {
+  float: left;
+  clear: left;
   width: 50px;
   height: 50px;
-  border-radius: 50%;
+  padding: 5px;
+  margin: 0 2px 2px 0;
   background: rgba(239, 186, 108, 0.2);
-  position: relative; }
+  border-radius: 50%;
+}
+
+.icon_contacts span{
+  position: absolute;
+  padding-left: 12px;
+  padding-top: 12px;
+  color: #e79a27;
+}
+
+.next-to-icon-contacts {
+  padding: 10px;
+  line-height: 30px;
+}
+
+.flow-root {
+  display: flow-root;
+  column-count: 1; /* мой любимый фолбэк:) */
+}
+
+.base_contacts {
+}

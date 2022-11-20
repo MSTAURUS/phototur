@@ -214,8 +214,8 @@ def travels():
     )
 
 
-@app.route("/travel/<int:id>", methods=["GET"])
-def travel(id):
+@app.route("/travel/<int:id_travel>", methods=["GET"])
+def travel(id_travel):
     return "trip"
 
 
@@ -339,13 +339,7 @@ def admin_staff():
 @app.route("/admin/empl/add", methods=["GET"], strict_slashes=False)
 @login_required
 def admin_empl_add():
-    staff: dao = dao.StaffDAO()
-
     empl: Dict = {"id": 0, "name": ""}
-    # data["short_desc"] =
-    # data["description"] =
-    # data["photo_card"] =
-    # data["showed"] =
 
     return render_template("admin/empl_form.html", empl=empl)
 
@@ -401,9 +395,8 @@ def admin_trips():
         2: "Цена~15",
     }
 
-    travels: dao = dao.TripsDAO()
-
-    trips_list: List[Trips] = travels.get_trips()
+    travels_query: dao = dao.TripsDAO()
+    trips_list: List[Trips] = travels_query.get_trips()
 
     return render_template(
         "admin/trips.html",
@@ -421,9 +414,9 @@ def admin_trips():
 @app.route("/admin/trip/<int:id_trip>", methods=["GET"], strict_slashes=False)
 @login_required
 def admin_trip_show(id_trip):
-    travels: dao = dao.TripsDAO(id_trip)
+    travels_query: dao = dao.TripsDAO(id_trip)
+    trip: List[Trips] = travels_query.get_trip()
 
-    trip: List[Trips] = travels.get_trip()
     return render_template("admin/trip_form.html", travels=trip)
 
 
@@ -431,9 +424,9 @@ def admin_trip_show(id_trip):
 @app.route("/admin/trip/del/<int:id_trip>", methods=["GET"], strict_slashes=False)
 @login_required
 def admin_trip_del(id_trip):
-    travels: dao = dao.TripsDAO(id_trip)
+    travels_query: dao = dao.TripsDAO(id_trip)
+    travels_query.delete_trip()
 
-    travels.delete_trip()
     flash("Запись удалена.", "success")
     return redirect(url_for("admin_trips"))
 
@@ -442,13 +435,7 @@ def admin_trip_del(id_trip):
 @app.route("/admin/trip/add", methods=["GET"], strict_slashes=False)
 @login_required
 def admin_trip_add():
-    travels: dao = dao.TripsDAO()
-
     trip: Dict = {"id": 0, "name": "", "price": "0"}
-    # data["short_desc"] =
-    # data["description"] =
-    # data["photo_card"] =
-    # data["showed"] =
 
     return render_template("admin/trip_form.html", travels=trip)
 
@@ -457,7 +444,7 @@ def admin_trip_add():
 @app.route("/admin/trip/edit/<int:id_trip>", methods=["POST"], strict_slashes=False)
 @login_required
 def admin_trip_edit(id_trip):
-    travels: dao = dao.TripsDAO(id_trip)
+    travels_query: dao = dao.TripsDAO(id_trip)
 
     name: str = stripex(request.form.get("name"))
     price: int = stripex(request.form.get("price"))
@@ -465,9 +452,10 @@ def admin_trip_edit(id_trip):
     description: str = stripex(request.form.get("texteditor"))
     photo_card: str = stripex(request.form.get("photo_card"))
 
-    showed = 1 if request.form.get("showed") else 0
+    showed: int = 1 if request.form.get("showed") else 0
 
-    travels.save(name, price, short_desc, description, photo_card, showed)
+    showed: bool = bool(showed)
+    travels_query.save(name, price, short_desc, description, photo_card, showed)
 
     flash("Запись сохранена.", "success")
     return redirect(url_for("admin_trips"))
@@ -640,10 +628,6 @@ def admin_page_blog():
     """
     system_info: List[System] = get_system_info()
 
-    # верхний текст на картинке
-    head_query: dao = dao.HeadsDAO("blog_head")
-    head_info: List[Heads] = head_query.get_head()
-
     title = "Блог"
     return render_template("admin/blog_page.html", system_info=system_info, title=title)
 
@@ -723,7 +707,7 @@ def admin_page_contacts_save():
 
     # оформление
     contacts_story: dao = dao.StoriesDAO("contacts")
-    contacts_story.save(None, contacts_bg, contacts_up_text, contacts_down_text, None, "contacts")
+    contacts_story.save("", contacts_bg, contacts_up_text, contacts_down_text, "", "contacts")
 
     flash("Сохранено", "success")
     return redirect(url_for("admin_page_contacts"))

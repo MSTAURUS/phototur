@@ -4,12 +4,13 @@
    <div class="site-section">
       <div class="container">
 
-        <div class="row justify-content-center text-center mb-5">
+        <div class="row justify-content-center text-center mb-3">
           <div class="col-md-10">
             <div class="heading-39101 mb-5">
               <span class="backdrop text-center">{{ contact_head.bg_text }}</span>
               <span class="subtitle-39191">{{ contact_head.up_head }}</span>
               <h3>{{ contact_head.down_head }}</h3>
+              <p>{{ contacts.desc }}</p>
             </div>
           </div>
         </div>
@@ -17,48 +18,38 @@
         <div class="row">
           <div class="col-lg-8 mb-5">
             <div class="bg-white p-3 p-md-5">
-              <ul class="list-unstyled footer-link">
-
-                                            <div class="social_29128">
-                                              <a href="" target="_blank"><span class="icon-vk"></span></a><p>Наша страница в VK</p></br>
-                                              <a href="" target="_blank"><span class="icon-instagram"></span></a><span>sadsadad</span></br>
-                                <a href="" target="_blank"><span class="icon-telegram"></span></a></br>
-                            </div>
-
-                {% if contacts.vk and contacts.vk != "None" %}
-                <li class="d-block mb-3">
-                  <span class="d-block text-black">VK:</span>
-                  <span class="icon-vk"></span><a href="{{ contacts.vk}}" target="_blank">Наша страница в VK</a>
-                </li>
-                {% endif %}
-
-                {% if contacts.instagram and contacts.instagram != "None" %}
-                <li class="d-block mb-3">
-                  <span class="d-block text-black">instagram:</span><span>
-                  <span class="icon-instagram"></span><a href="{{ contacts.instagram}}" target="_blank">Наша страница в Instagram</a></span>
-                </li>
-                {% endif %}
-
-                {% if contacts.telegram and contacts.telegram != "None" %}
-                <li class="d-block mb-3">
-                  <span class="d-block text-black">Telegram:</span><span>
-                  <span class="icon-telegram"></span><a href="{{ contacts.telegram}}" target="_blank">Наш телеграм канал</a></span>
-                </li>
-                {% endif %}
-
-                {% if contacts.phone and contacts.phone != "None" %}
+              {% if contacts.vk and contacts.vk != "None" %}
+              <div class="base_contacts p-md-2">
+                <div class="icon_contacts"><span class="icon-vk"></span></div>
+                <div class="flow-root next-to-icon-contacts">Мы в VK: <a href="{{contacts.vk}}" target="_blank">@</a></div>
+              </div>
+              {% endif %}
+              {% if contacts.instagram and contacts.instagram != "None" %}
+              <div class="base_contacts p-md-2">
+                <div class="icon_contacts"><span class="icon-instagram"></span></div>
+                <div class="flow-root next-to-icon-contacts">Мы в Instagram: <a href="{{contacts.instagram}}" target="_blank">@</a></div>
+              </div>
+              {% endif %}
+              {% if contacts.telegram and contacts.telegram != "None" %}
+              <div class="base_contacts p-md-2">
+                <div class="icon_contacts"><span class="icon-telegram"></span></div>
+                <div class="flow-root next-to-icon-contacts">Мы в Telegram: <a href="{{ contacts.telegram }}" target="_blank">@</a></div>
+              </div>
+              {% endif %}
+              {% if contacts.phone and contacts.phone != "None" %}
                 {% for phone in phones%}
-                <li class="d-block mb-3"><span class="d-block text-black">Телефон:</span><<span class="icon-phone"></span>{{ phone }}</li>
+              <div class="base_contacts  p-md-2">
+                <div class="icon_contacts"><span class="icon-phone"></span></div>
+                <div class="flow-root next-to-icon-contacts">Телефон: <a href="tel:{{phone}}" target="_blank">{{ phone }}</a></div>
+              </div>
                 {%endfor%}
-                {% endif %}
-
-                {% if contacts.email and contacts.email != "None" %}
-                <li class="d-block mb-3">
-                  <span class="d-block text-black fa fa-envelope-o">Email:</span><span>
-                  <span class="icon-envelope-open"></span><a href="mailto:{{ contacts.email}}">{{ contacts.email }}</a></span>
-                </li>
-                {% endif %}
-              </ul>
+              {% endif %}
+              {% if contacts.email and contacts.email != "None" %}
+              <div class="base_contacts p-md-2">
+                <div class="icon_contacts"><span class="icon-envelope-open"></span></div>
+                <div class="flow-root next-to-icon-contacts">Наша почта: <a href="mailto:{{ contacts.email}}" target="_blank">{{ contacts.email }}</a></div>
+              </div>
+              {% endif %}
             </div>
           </div>
         </div>
