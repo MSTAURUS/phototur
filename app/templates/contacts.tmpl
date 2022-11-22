@@ -21,19 +21,25 @@
               {% if contacts.vk and contacts.vk != "None" %}
               <div class="base_contacts p-md-2">
                 <div class="icon_contacts"><span class="icon-vk"></span></div>
-                <div class="flow-root next-to-icon-contacts">Мы в VK: <a href="{{contacts.vk}}" target="_blank">@</a></div>
+                <div class="flow-root next-to-icon-contacts">Мы в VK: <a href="{{contacts.vk}}" target="_blank">@{{ contacts.vk[15:] }}</a></div>
               </div>
               {% endif %}
               {% if contacts.instagram and contacts.instagram != "None" %}
               <div class="base_contacts p-md-2">
                 <div class="icon_contacts"><span class="icon-instagram"></span></div>
-                <div class="flow-root next-to-icon-contacts">Мы в Instagram: <a href="{{contacts.instagram}}" target="_blank">@</a></div>
+                <div class="flow-root next-to-icon-contacts">Мы в Instagram: <a href="{{contacts.instagram}}" target="_blank">@{{contacts.instagram[22:]}}</a></div>
               </div>
               {% endif %}
               {% if contacts.telegram and contacts.telegram != "None" %}
               <div class="base_contacts p-md-2">
                 <div class="icon_contacts"><span class="icon-telegram"></span></div>
-                <div class="flow-root next-to-icon-contacts">Мы в Telegram: <a href="{{ contacts.telegram }}" target="_blank">@</a></div>
+                <div class="flow-root next-to-icon-contacts">Мы в Telegram: <a href="{{ contacts.telegram }}" target="_blank">@{{ contacts.telegram[12:] }}</a></div>
+              </div>
+              {% endif %}
+              {% if contacts.whatsapp and contacts.whatsapp != "None" %}
+              <div class="base_contacts p-md-2">
+                <div class="icon_contacts"><span class="icon-whatsapp"></span></div>
+                <div class="flow-root next-to-icon-contacts">Мы в Whatsapp: <a href="{{ contacts.whatsapp }}" target="_blank">Начать чат</a></div>
               </div>
               {% endif %}
               {% if contacts.phone and contacts.phone != "None" %}

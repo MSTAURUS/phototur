@@ -90,6 +90,7 @@ class Contacts(db.Model):
     vk: Optional[str] = db.Column(db.String(128))
     instagram: Optional[str] = db.Column(db.String(128))
     telegram: Optional[str] = db.Column(db.String(128))
+    whatsapp: Optional[str] = db.Column(db.String(128))
     email: Optional[str] = db.Column(db.String(128))
     phone: Optional[str] = db.Column(db.String(128))
     desc: Optional[str] = db.Column(db.String(256))

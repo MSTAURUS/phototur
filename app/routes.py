@@ -44,7 +44,7 @@ def favicon():
 @app.route("/")
 @app.route("/index")
 def index():
-    system = get_system_info()
+    system: List[System] = get_system_info()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("main_head")
@@ -78,6 +78,9 @@ def index():
     staffs_query: dao = dao.StaffDAO()
     staffs_info: List[Staff] = staffs_query.get_staff()
 
+    # url
+    url = url_for("index", _external=True)
+
     return render_template(
         "index.tmpl",
         system=system,
@@ -89,6 +92,7 @@ def index():
         trips=trips_info,
         staff_head=staff_head_info,
         staffs=staffs_info,
+        url=url
     )
 
 
@@ -140,7 +144,7 @@ def post_login():
 @exception
 @app.route("/about", methods=["GET"])
 def about():
-    system = get_system_info()
+    system: List[System] = get_system_info()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("about_head")
@@ -166,6 +170,9 @@ def about():
     staffs_query: dao = dao.StaffDAO()
     staffs_info: List[Staff] = staffs_query.get_staff()
 
+    # url
+    url = url_for("about", _external=True)
+
     return render_template(
         "about.tmpl",
         system=system,
@@ -175,13 +182,14 @@ def about():
         footer_info=footer_info,
         staff_head=staff_head_info,
         staffs=staffs_info,
+        url=url
     )
 
 
 @exception
 @app.route("/travels", methods=["GET"])
 def travels():
-    system = get_system_info()
+    system: List[System] = get_system_info()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("trips_head")
@@ -203,6 +211,9 @@ def travels():
     trips_query: dao = dao.TripsDAO()
     trips_info: List[Trips] = trips_query.get_trips()
 
+    # url
+    url = url_for("travels", _external=True)
+
     return render_template(
         "travels.tmpl",
         system=system,
@@ -211,17 +222,48 @@ def travels():
         footer_info=footer_info,
         trips_head=trips_head_info,
         trips=trips_info,
+        url=url
     )
 
 
 @app.route("/travel/<int:id_travel>", methods=["GET"])
 def travel(id_travel):
-    return "trip"
+    system: List[System] = get_system_info()
+
+    # верхний текст на картинке
+    head_query: dao = dao.HeadsDAO("trips_head")
+    head_info: List[Heads] = head_query.get_head()
+
+    # наша история
+    our_history_query: dao = dao.StoriesDAO("our_history")
+    our_history_info: List[Stories] = our_history_query.get_story()
+
+    # шапка путешествий
+    trips_head_query: dao = dao.StoriesDAO("trips")
+    trips_head_info: List[Stories] = trips_head_query.get_story()
+
+    # симпл путешествия
+    # сами путешествия списком
+    trips_query: dao = dao.TripsDAO(id_trips=id_travel)
+    trips_info: List[Trips] = trips_query.get_trip()
+
+    # url
+    url = url_for("travel", id_travel=id_travel, _external=True)
+
+    return render_template(
+        "simple_travel.tmpl",
+        system=system,
+        head_info=head_info,
+        our_history=our_history_info,
+        trips_head=trips_head_info,
+        trips_info=trips_info,
+        url=url
+    )
 
 
 @app.route("/contact", methods=["GET"])
 def contact():
-    system = get_system_info()
+    system: List[System] = get_system_info()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("contacts_head")
@@ -237,26 +279,35 @@ def contact():
 
     phones: List = contacts_data.phone.split(";")
 
+    # url
+    url = url_for("contact", _external=True)
+
     return render_template(
         "contacts.tmpl",
         system=system,
         head_info=head_info,
         contact_head=contact_head_info,
         contacts=contacts_data,
-        phones=phones
+        phones=phones,
+        url=url
     )
 
 
 @exception
 @app.route("/blog", methods=["GET"])
 def blog():
+    # url
+    url = url_for("blog", _external=True)
+
     return "blog"
 
 
 @exception
 @app.route("/blog/<int:blog_id>", methods=["GET"])
-def blog_simple(blog_id):
-    return f"blog {blog_id}"
+def blog_simple(id_blog):
+    # url
+    url = url_for("blog_simple", id_blog=id_blog, _external=True)
+    return f"blog {id_blog}"
 
 
 # Часть Админки
@@ -525,7 +576,7 @@ def admin_page_about():
     Настройка страницы о нас
     """
     data: Dict = {}
-    system_info: List = get_system_info()
+    system_info: List[System] = get_system_info()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("about_head")
@@ -665,6 +716,7 @@ def admin_page_contacts():
     data["vk"] = contacts_list.vk
     data["instagram"] = contacts_list.instagram
     data["telegram"] = contacts_list.telegram
+    data["whatsapp"] = contacts_list.whatsapp
     data["email"] = contacts_list.email
     data["phone"] = contacts_list.phone
     data["desc"] = contacts_list.desc
@@ -689,6 +741,7 @@ def admin_page_contacts_save():
     vk: str = stripex(request.form.get("vk"))
     instagram: str = stripex(request.form.get("instagram"))
     telegram: str = stripex(request.form.get("telegram"))
+    whatsapp: str = stripex(request.form.get("whatsapp"))
     email: str = stripex(request.form.get("email"))
     phone: str = stripex(request.form.get("phone"))
     desc: str = stripex(request.form.get("desc"))
@@ -703,7 +756,7 @@ def admin_page_contacts_save():
 
     # контакты
     contacts: dao = dao.ContactsDAO()
-    contacts.save(vk, instagram, telegram, email, phone, desc)
+    contacts.save(vk, instagram, telegram, whatsapp, email, phone, desc)
 
     # оформление
     contacts_story: dao = dao.StoriesDAO("contacts")
@@ -721,7 +774,7 @@ def admin_story(name):
     Настройка страниц историй "наша история", "наша цель"
     """
 
-    system_info: List = get_system_info()
+    system_info: List[System] = get_system_info()
 
     # верхний текст на картинке
     story_query: dao = dao.StoriesDAO(name)

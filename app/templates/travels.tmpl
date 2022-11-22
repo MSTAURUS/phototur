@@ -22,7 +22,7 @@
                         </div>
                         <div class="listing-item-content">
                             <p class="px-3 mb-3 category bg-primary price">{{ trip.price }}</p>
-                            <h2 class="mb-1"><a href="trip-single.html">{{ trip.name }}</a></h2>
+                            <h2 class="mb-1"><a href="{{ url_for('travel', id_travel=trip.id) }}">{{ trip.name }}</a></h2>
                         </div>
                     </div>
                 </div>

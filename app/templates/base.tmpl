@@ -18,6 +18,16 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
         {% endblock %}
+
+        {% block meta %}
+        <meta property="og:title" content="{{head_info.title}}">
+        <meta property="og:site_name" content="{{system.title}}">
+        <meta property="og:url" content="{{ url }}">
+        <meta property="og:description" content="{{ head_info.description }}">
+        <meta property="og:image" content="{{ system.icon }}">
+        <meta property="og:image:width" content="968">
+        <meta property="og:image:height" content="504">
+        {% endblock %}
     </head>
     <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
         <div class="site-wrap" id="home-section">
@@ -92,12 +102,13 @@
             {% endblock %}
 
             {% block footer %}
-            <footer class="site-footer bg-light">
+            <footer class="site-footer  bg-light">
                 <div class="container">
                     <div class="row">
-                        {% if random_photo_list %}
+
                         <div class="col-lg-3">
                             <h2 class="footer-heading mb-3">Случайные фото</h2>
+                            {% if random_photo_list %}
                             <div class="row">
                                 {% for photo in random_photo_list %}
                                 <div class="col-4 gal_col">
@@ -105,21 +116,24 @@
                                 </div>
                                 {% endfor %}
                             </div>
+                            {% endif %}
                         </div>
-                       {% endif %}
+
+                        {% block footer_link %}
                         <div class="col-lg-8 ml-auto">
                             <div class="row">
                                 <div class="col-lg-6 ml-auto">
                                     <h2 class="footer-heading mb-4">Ссылки</h2>
                                     <ul class="list-unstyled">
-                                        <li><a href="{{ url_for('about') }}">О нас</a></li>
-                                        <li><a href="#">Условия обслуживания</a></li>
-                                        <li><a href="#">Конфиденциальность</a></li>
-                                        <li><a href="{{ url_for('contact') }}">Контакты</a></li>
-                                        </ul>
+                                        <li><a href="{{ url_for('index') }}" >Главная</a></li>
+                                        <li><a href="{{ url_for('about') }}" >О нас</a></li>
+                                        <li><a href="{{ url_for('travels') }}" >Путешествия</a></li>
+                                        <li><a href="{{ url_for('contact') }}" >Контакты</a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
+                        {% endblock %}
                     </div>
                     <div class="row pt-5 mt-5">
                         <div class="col-md-10">

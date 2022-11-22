@@ -176,11 +176,12 @@ class ContactsDAO:
         return self.contacts
 
     def save(
-        self, vk: str, instagram: str, telegram: str, email: str, phone: str, desc: str
+        self, vk: str, instagram: str, telegram: str, whatsapp: str, email: str, phone: str, desc: str
     ):
         self.contacts.vk = vk
         self.contacts.instagram = instagram
         self.contacts.telegram = telegram
+        self.contacts.whatsapp = whatsapp
         self.contacts.email = email
         self.contacts.phone = phone
         self.contacts.desc = desc
