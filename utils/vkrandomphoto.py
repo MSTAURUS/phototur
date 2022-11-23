@@ -13,7 +13,8 @@ class VKRandomPhoto:
         self.header = (
             "Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
         )
-        self.loop = asyncio.get_event_loop()
+        self.loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(self.loop)
         self.photo_list = []
 
     async def get_page(self) -> Tuple[str, str]:

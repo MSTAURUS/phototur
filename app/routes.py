@@ -11,11 +11,11 @@ from flask_login import login_user, logout_user, current_user, login_required
 import os
 from app import app, dao, db
 from datetime import timezone
-from utils.utils import exception, stripex
+from utils.utils import exception, stripex, get_photo_vk
 from typing import Dict, List
 from datetime import datetime
 
-from app.models import Trips, Heads, System, Stories, Contacts, Staff
+from app.models import Trips, Heads, System, Stories, Contacts, Staff, Users
 
 
 @app.before_request
@@ -29,6 +29,12 @@ def before_request():
 def get_system_info() -> List[System]:
     system: dao = dao.SystemDAO()
     return system.get_system()
+
+
+@exception
+def get_photo():
+    random_photo_list: List[Dict] = get_photo_vk("https://vk.com/albums-53542715")
+    return random_photo_list
 
 
 @app.route("/favicon.ico")
@@ -45,6 +51,7 @@ def favicon():
 @app.route("/index")
 def index():
     system: List[System] = get_system_info()
+    random_photo_list: List[Dict] = get_photo()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("main_head")
@@ -84,6 +91,7 @@ def index():
     return render_template(
         "index.tmpl",
         system=system,
+        random_photo_list=random_photo_list,
         head_info=head_info,
         our_history=our_history_info,
         our_mission=our_mission_info,
@@ -92,7 +100,7 @@ def index():
         trips=trips_info,
         staff_head=staff_head_info,
         staffs=staffs_info,
-        url=url
+        url=url,
     )
 
 
@@ -145,6 +153,7 @@ def post_login():
 @app.route("/about", methods=["GET"])
 def about():
     system: List[System] = get_system_info()
+    random_photo_list: List[Dict] = get_photo()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("about_head")
@@ -176,13 +185,14 @@ def about():
     return render_template(
         "about.tmpl",
         system=system,
+        random_photo_list=random_photo_list,
         head_info=head_info,
         our_history=our_history_info,
         our_mission=our_mission_info,
         footer_info=footer_info,
         staff_head=staff_head_info,
         staffs=staffs_info,
-        url=url
+        url=url,
     )
 
 
@@ -190,6 +200,7 @@ def about():
 @app.route("/travels", methods=["GET"])
 def travels():
     system: List[System] = get_system_info()
+    random_photo_list: List[Dict] = get_photo()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("trips_head")
@@ -217,18 +228,20 @@ def travels():
     return render_template(
         "travels.tmpl",
         system=system,
+        random_photo_list=random_photo_list,
         head_info=head_info,
         our_history=our_history_info,
         footer_info=footer_info,
         trips_head=trips_head_info,
         trips=trips_info,
-        url=url
+        url=url,
     )
 
 
 @app.route("/travel/<int:id_travel>", methods=["GET"])
 def travel(id_travel):
     system: List[System] = get_system_info()
+    random_photo_list: List[Dict] = get_photo()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("trips_head")
@@ -253,17 +266,19 @@ def travel(id_travel):
     return render_template(
         "simple_travel.tmpl",
         system=system,
+        random_photo_list=random_photo_list,
         head_info=head_info,
         our_history=our_history_info,
         trips_head=trips_head_info,
         trips_info=trips_info,
-        url=url
+        url=url,
     )
 
 
 @app.route("/contact", methods=["GET"])
 def contact():
     system: List[System] = get_system_info()
+    random_photo_list: List[Dict] = get_photo()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("contacts_head")
@@ -285,11 +300,12 @@ def contact():
     return render_template(
         "contacts.tmpl",
         system=system,
+        random_photo_list=random_photo_list,
         head_info=head_info,
         contact_head=contact_head_info,
         contacts=contacts_data,
         phones=phones,
-        url=url
+        url=url,
     )
 
 
@@ -760,7 +776,9 @@ def admin_page_contacts_save():
 
     # оформление
     contacts_story: dao = dao.StoriesDAO("contacts")
-    contacts_story.save("", contacts_bg, contacts_up_text, contacts_down_text, "", "contacts")
+    contacts_story.save(
+        "", contacts_bg, contacts_up_text, contacts_down_text, "", "contacts"
+    )
 
     flash("Сохранено", "success")
     return redirect(url_for("admin_page_contacts"))
@@ -814,3 +832,102 @@ def admin_story_save(name):
 
     flash("Сохранено", "success")
     return redirect(url_for("admin_story", name=name))
+
+
+@exception
+@app.route("/admin/user/add", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_user_add():
+    user: Dict = {"id": 0, "name": ""}
+
+    return render_template("admin/user_form.html", data=user)
+
+
+@exception
+@app.route("/admin/user/del/<int:id_user>", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_user_del(id_user):
+    user: dao = dao.UserDAO(id_user)
+
+    user.delete_user()
+    flash("Запись удалена.", "success")
+    return redirect(url_for("admin_users"))
+
+
+@exception
+@app.route("/admin/user/edit/<int:id_user>", methods=["POST"], strict_slashes=False)
+@login_required
+def admin_user_edit(id_user):
+    login: str = stripex(request.form.get("login"))
+    name: str = stripex(request.form.get("name"))
+    about: str = stripex(request.form.get("about"))
+    pwd: str = stripex(request.form.get("pwd"))
+    confirm_pwd: str = stripex(request.form.get("confirm_pwd"))
+    is_admin: bool = True if stripex(request.form.get("confirm_pwd")) == "on" else False
+
+    error = False
+
+    user_query: dao = dao.UserDAO(id_user)
+    user: List[Users] = user_query.get_user()
+    exist_user = True if user.id else False
+
+    if (not pwd or pwd != confirm_pwd) and not exist_user:
+        flash("Пароли не совпадают", "warning")
+        error = True
+
+    if not exist_user:
+        user_for_name: List[Users] = user_query.get_by_login(login)
+        if user_for_name:
+            flash("Логин занят", "warning")
+            error = True
+
+    if error:
+        user_data: Dict = {"id": user.id or 0, "name": name, "login": login, "about": about}
+        return render_template("admin/user_form.html", data=user_data)
+
+    if exist_user:
+        password = None
+        if pwd and (pwd == confirm_pwd):
+            password = pwd
+        user_query.create_superuser(login, name, password, about, is_admin)
+    else:
+        # создаём пользюка
+        user_query.create_superuser(login, name, pwd, about, is_admin)
+
+    flash("Запись сохранена.", "success")
+    return redirect(url_for("admin_users"))
+
+
+@exception
+@app.route("/admin/user/<int:id_user>", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_user_show(id_user):
+    user_query: dao = dao.UserDAO(id_user)
+
+    user: List[Users] = user_query.get_user()
+    return render_template("admin/user_form.html", data=user)
+
+
+@exception
+@app.route("/admin/users", methods=["GET"], strict_slashes=False)
+@login_required
+def admin_users():
+    row_list: Dict[int, str] = {
+        2: "Имя~100",
+        1: "Логин~100",
+    }
+
+    users_query: dao = dao.UserDAO()
+
+    users_list: List[Users] = users_query.get_users()
+
+    return render_template(
+        "admin/users.html",
+        models=users_list,
+        row_list=row_list,
+        filter=True,
+        add=True,
+        adding="/admin/user/add",
+        editing="/admin/user/",
+        deleting="/admin/user/del/",
+    )

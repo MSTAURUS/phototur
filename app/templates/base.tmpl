@@ -61,7 +61,6 @@
                     </div>
                 </div>
             </header>
-
             {% block header_banner %}
             <div class="ftco-blocks-cover-1">
                 <div class="site-section-cover overlay" style="background-image: url({% if system.bg_pic %} '{{ system.bg_pic }}' {% else %}'{{ url_for('static', filename='images/hero_1.jpg') }}'{% endif %})">
@@ -112,7 +111,9 @@
                             <div class="row">
                                 {% for photo in random_photo_list %}
                                 <div class="col-4 gal_col">
-                                    <a href="#"><img src="images/insta_1.jpg" alt="Image" class="img-fluid"></a>
+                                    {% for key, val in photo.items() %}
+                                    <a href="{{ key }}" target="_blank"><img src="{{ val }}" alt="Image" class="img-fluid"></a>
+                                    {% endfor %}
                                 </div>
                                 {% endfor %}
                             </div>
@@ -157,6 +158,10 @@
         </div>
 
         {% include "auth.html" ignore missing %}
+
+        {% block statistic%}
+        {{ system.statistic | safe }}
+        {% endblock %}
 
         {% block script %}
         <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>

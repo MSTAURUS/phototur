@@ -134,6 +134,7 @@ class System(db.Model):
     icon: Optional[str] = db.Column(db.String(256))
     bg_pic: Optional[str] = db.Column(db.String(256))
     main_video: Optional[str] = db.Column(db.String(1024))
+    statistic: Optional[str] = db.Column(db.String)
 
 
 class Stories(db.Model):

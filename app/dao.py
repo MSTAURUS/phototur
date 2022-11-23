@@ -5,19 +5,62 @@ from typing import List
 
 
 class UserDAO:
-    def __int__(self):
-        pass
+    def __init__(self, id_user: int = None):
+        if id_user:
+            self.user = Users.query.filter_by(id=id_user).first()
+        else:
+            self.user = Users()
+        # pass
 
-    @staticmethod
-    def create_superuser(login: str, password: str) -> None:
-        usr: Users = Users()
-        usr.set_password(password)
-        usr.login = login
-        usr.is_admin = 0
-        usr.is_delete = 0
-        usr.lastdate = datetime.now()
-        usr.about = ""
-        db.session.add(usr)
+    def create_superuser(self, login: str, name: str, password: str, about: str, is_admin: bool) -> None:
+        if password:
+            self.user.set_password(password)
+        self.user.login = login
+        self.user.name = name
+        self.user.is_admin = is_admin
+        self.user.is_delete = 0
+        self.user.lastdate = datetime.now()
+        self.user.about = about
+        db.session.add(self.user)
+        db.session.commit()
+
+    def get_users(self) -> List[Users]:
+        return self.user.query.add_columns(
+            Users.login,
+            Users.name,
+            Users.is_admin,
+            Users.is_delete,
+            Users.password_hash,
+            Users.id,
+            Users.about,
+        )
+
+    def get_user(self) -> List[Users]:
+        return self.user
+
+    def delete_user(self) -> None:
+        db.session.delete(self.user)
+        db.session.commit()
+    #
+    # def save(
+    #     self,
+    #     login,
+    #     name,
+    #     is_admin,
+    #     is_delete,
+    #     password_hash,
+    #     about,
+    # ) -> None:
+    #     self.user.login = login
+    #     self.user.name = name
+    #     self.user.is_admin = is_admin
+    #     self.user.is_delete = is_delete
+    #     self.user.password_hash = password_hash
+    #     self.user.about = about
+    #
+    #     # Если записей нет, то нужно создать
+    #     if self.user.id is None:
+    #         db.session.add(self.user)
         db.session.commit()
 
     @staticmethod
@@ -47,11 +90,12 @@ class SystemDAO:
     def get_system(self) -> List[System]:
         return self.sys.query.first()
 
-    def save(self, title: str, icon: str, bg_pic: str, main_video: str) -> None:
+    def save(self, title: str, icon: str, bg_pic: str, main_video: str, statistic: str) -> None:
         self.sys.icon = icon
         self.sys.title = title
         self.sys.bg_pic = bg_pic
         self.sys.main_video = main_video
+        self.sys.statistic = statistic
 
         # Если записей нет, то нужно создать
         if self.sys.id is None:

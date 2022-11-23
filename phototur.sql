@@ -99,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `system` (
   `icon` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `bg_pic` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `main_video` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `statistic` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -108,11 +109,11 @@ CREATE TABLE IF NOT EXISTS `system` (
 CREATE TABLE IF NOT EXISTS `trips` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `price` int(11) NOT NULL DEFAULT 0,
+  `price` int(11) NOT NULL DEFAULT '0',
   `short_desc` varchar(33) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `photo_card` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `showed` tinyint(4) NOT NULL DEFAULT 0,
+  `showed` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -123,8 +124,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `is_admin` tinyint(4) DEFAULT 0,
-  `is_delete` tinyint(4) DEFAULT 0,
+  `is_admin` tinyint(4) DEFAULT '0',
+  `is_delete` tinyint(4) DEFAULT '0',
   `lastdate` timestamp NULL DEFAULT NULL,
   `password_hash` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `about` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
