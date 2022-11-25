@@ -75,7 +75,7 @@ def index():
 
     # сами путешествия списком
     trips_query: dao = dao.TripsDAO()
-    trips_info: List[Trips] = trips_query.get_trips()
+    trips_info: List[Trips] = trips_query.get_showed_trips(6)
 
     # шапка сотрудников
     staff_head_query: dao = dao.StoriesDAO("staff")
@@ -220,7 +220,7 @@ def travels():
 
     # сами путешествия списком
     trips_query: dao = dao.TripsDAO()
-    trips_info: List[Trips] = trips_query.get_trips()
+    trips_info: List[Trips] = trips_query.get_showed_trips()
 
     # url
     url = url_for("travels", _external=True)
@@ -331,7 +331,21 @@ def blog_simple(id_blog):
 @app.route("/admin", methods=["GET"], strict_slashes=False)
 @login_required
 def admin():
-    return render_template("admin/index.html")
+    system: List[System] = get_system_info()
+    return render_template("admin/index.html", system=system)
+
+
+@exception
+@app.route("/admin", methods=["POST"], strict_slashes=False)
+@login_required
+def admin_index_save():
+    statistic: str = stripex(request.form.get("statistic"))
+
+    system_query: dao = dao.SystemDAO(1)
+
+    system_query.save_statistic(statistic)
+
+    return redirect(url_for("admin"))
 
 
 @exception
@@ -366,12 +380,12 @@ def admin_system_save():
     id_system: int = int(stripex(request.form.get("id")) or 0)
     title: str = stripex(request.form.get("title"))
     icon: str = stripex(request.form.get("icon"))
-    bg_pic: str = stripex(request.form.get("bg_pic"))
+    bg_pic: str = stripex(request.form.get("photo_card"))
     main_video: str = stripex(request.form.get("main_video"))
 
     sys: dao = dao.SystemDAO(id_system)
 
-    sys.save(title, icon, bg_pic, main_video)
+    sys.save(title, icon, bg_pic, main_video, None)
 
     flash("Сохранено", "success")
     return redirect(url_for("admin_system"))
@@ -858,41 +872,46 @@ def admin_user_del(id_user):
 @app.route("/admin/user/edit/<int:id_user>", methods=["POST"], strict_slashes=False)
 @login_required
 def admin_user_edit(id_user):
-    login: str = stripex(request.form.get("login"))
+    login_this_user: str = stripex(request.form.get("login"))
     name: str = stripex(request.form.get("name"))
-    about: str = stripex(request.form.get("about"))
+    about_user: str = stripex(request.form.get("about"))
     pwd: str = stripex(request.form.get("pwd"))
     confirm_pwd: str = stripex(request.form.get("confirm_pwd"))
-    is_admin: bool = True if stripex(request.form.get("confirm_pwd")) == "on" else False
+    admin_flag: str = stripex(request.form.get("confirm_pwd"))
+
+    is_admin: bool = admin_flag == "on"
 
     error = False
 
     user_query: dao = dao.UserDAO(id_user)
     user: List[Users] = user_query.get_user()
-    exist_user = True if user.id else False
+    exist_user = bool(user.id)
 
     if (not pwd or pwd != confirm_pwd) and not exist_user:
         flash("Пароли не совпадают", "warning")
         error = True
 
     if not exist_user:
-        user_for_name: List[Users] = user_query.get_by_login(login)
+        user_for_name: List[Users] = user_query.get_by_login(login_this_user)
         if user_for_name:
             flash("Логин занят", "warning")
             error = True
 
     if error:
-        user_data: Dict = {"id": user.id or 0, "name": name, "login": login, "about": about}
+        user_data: Dict = {
+            "id": user.id or 0,
+            "name": name,
+            "login": login,
+            "about": about_user,
+        }
         return render_template("admin/user_form.html", data=user_data)
 
     if exist_user:
-        password = None
-        if pwd and (pwd == confirm_pwd):
-            password = pwd
-        user_query.create_superuser(login, name, password, about, is_admin)
+        password = pwd if pwd and (pwd == confirm_pwd) else None
+        user_query.create_superuser(login_this_user, name, password, about_user, is_admin)
     else:
         # создаём пользюка
-        user_query.create_superuser(login, name, pwd, about, is_admin)
+        user_query.create_superuser(login_this_user, name, pwd, about_user, is_admin)
 
     flash("Запись сохранена.", "success")
     return redirect(url_for("admin_users"))

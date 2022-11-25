@@ -61,6 +61,10 @@
                     </div>
                 </div>
             </header>
+                    {% for category, message in get_flashed_messages(with_categories=True) %}
+                    <div class="alert alert-{{category}} alert-dismissible">{{ message }}</div>
+                    {% endfor %}
+
             {% block header_banner %}
             <div class="ftco-blocks-cover-1">
                 <div class="site-section-cover overlay" style="background-image: url({% if system.bg_pic %} '{{ system.bg_pic }}' {% else %}'{{ url_for('static', filename='images/hero_1.jpg') }}'{% endif %})">

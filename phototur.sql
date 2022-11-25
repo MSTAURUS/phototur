@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `icon` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `bg_pic` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `bg_pic` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `main_video` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `statistic` text,
   PRIMARY KEY (`id`)

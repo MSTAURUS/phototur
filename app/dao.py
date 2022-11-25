@@ -95,6 +95,15 @@ class SystemDAO:
         self.sys.title = title
         self.sys.bg_pic = bg_pic
         self.sys.main_video = main_video
+        if statistic:
+            self.sys.statistic = statistic
+
+        # Если записей нет, то нужно создать
+        if self.sys.id is None:
+            db.session.add(self.sys)
+        db.session.commit()
+
+    def save_statistic(self, statistic: str) -> None:
         self.sys.statistic = statistic
 
         # Если записей нет, то нужно создать
@@ -120,6 +129,17 @@ class TripsDAO:
             Trips.showed,
             Trips.id,
         )
+
+    def get_showed_trips(self, limit: int = 1000) -> List[Trips]:
+        return self.trips.query.add_columns(
+            Trips.name,
+            Trips.price,
+            Trips.short_desc,
+            Trips.description,
+            Trips.photo_card,
+            Trips.showed,
+            Trips.id,
+        ).filter(Trips.showed == 1).limit(limit)
 
     def get_trip(self) -> List[Trips]:
         # rows = self.trips.query.filter_by(id=id_trip).first()
