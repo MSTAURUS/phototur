@@ -17,7 +17,7 @@ login.login_message = 'Авторизуйтесь для доступа к эт�
 if not app.debug:
     if not os.path.exists('log'):
         os.mkdir('log')
-    file_handler = RotatingFileHandler('log/phototur.log', maxBytes=10240,
+    file_handler = RotatingFileHandler('log/phototur.log', maxBytes=1000000,
                                        backupCount=10)
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
