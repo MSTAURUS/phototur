@@ -14,6 +14,6 @@ COPY ./utils /project/utils
 COPY ./config.py /project/config.py
 COPY ./main.py /project/main.py
 
-EXPOSE 80
+EXPOSE 8563
 
-ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:80", "-w", "3", "main:app"]
+ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8563", "-w", "1", "main:app"]
