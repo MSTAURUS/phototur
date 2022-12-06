@@ -153,7 +153,11 @@
                             </div>
                         </div>
                         <div class="col-md-2">
+                            {% if system.is_auth %}
+                            <a href="{{ url_for('admin') }}"><i style="color: #efba6c;" class="icon-lock" aria-hidden="true"></i></a>
+                            {% else%}
                             <p class="auth" data-toggle="modal" data-target="#authForm" onclick="document.getElementById('form_auth').style.display='block'"><i style="color: #efba6c;" class="icon-lock" aria-hidden="true"></i></p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -28,7 +28,9 @@ def before_request():
 @exception
 def get_system_info() -> List[System]:
     system: dao = dao.SystemDAO()
-    return system.get_system()
+    result: List[System] = system.get_system()
+    result.__dict__.update({'is_auth': current_user.is_authenticated})
+    return result
 
 
 @exception
@@ -131,7 +133,7 @@ def login():
 @app.route("/login", methods=["POST"])
 def post_login():
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("admin"))
 
     username: str = request.form["username"]
     password: str = request.form["pwd"]
