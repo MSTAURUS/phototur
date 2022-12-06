@@ -108,20 +108,11 @@
             <footer class="site-footer  bg-light">
                 <div class="container">
                     <div class="row">
-
                         <div class="col-lg-3">
                             <h2 class="footer-heading mb-3">Случайные фото</h2>
-                            {% if random_photo_list %}
-                            <div class="row">
-                                {% for photo in random_photo_list %}
-                                <div class="col-4 gal_col">
-                                    {% for key, val in photo.items() %}
-                                    <a href="{{ key }}" target="_blank"><img src="{{ val }}" alt="Image" class="img-fluid"></a>
-                                    {% endfor %}
-                                </div>
-                                {% endfor %}
+                            <div class="row gallery">
+
                             </div>
-                            {% endif %}
                         </div>
 
                         {% block footer_link %}
@@ -187,6 +178,7 @@
         <script src="{{ url_for('static', filename='js/isotope.pkgd.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/photo.js') }}"></script>
         {% endblock %}
     </body>
 </html>

@@ -1,3 +1,8 @@
+import os
+from datetime import datetime
+from datetime import timezone
+from typing import Dict, List
+
 from flask import (
     render_template,
     redirect,
@@ -5,17 +10,13 @@ from flask import (
     url_for,
     send_from_directory,
     make_response,
-    flash,
+    flash
 )
 from flask_login import login_user, logout_user, current_user, login_required
-import os
-from app import app, dao, db
-from datetime import timezone
-from utils.utils import exception, stripex, get_photo_vk
-from typing import Dict, List
-from datetime import datetime
 
+from app import app, dao, db
 from app.models import Trips, Heads, System, Stories, Contacts, Staff, Users
+from utils.utils import exception, stripex, get_photo_vk
 
 
 @app.before_request
@@ -33,10 +34,17 @@ def get_system_info() -> List[System]:
     return result
 
 
-@exception
 def get_photo():
     random_photo_list: List[Dict] = get_photo_vk("https://vk.com/albums-53542715")
     return random_photo_list
+
+
+@app.route("/get_photo")
+def photo():
+    try:
+        return get_photo(), 200, {'ContentType': 'application/json'}
+    except Exception:
+        return None, 500
 
 
 @app.route("/favicon.ico")
@@ -53,7 +61,6 @@ def favicon():
 @app.route("/index")
 def index():
     system: List[System] = get_system_info()
-    random_photo_list: List[Dict] = get_photo()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("main_head")
@@ -93,7 +100,6 @@ def index():
     return render_template(
         "index.tmpl",
         system=system,
-        random_photo_list=random_photo_list,
         head_info=head_info,
         our_history=our_history_info,
         our_mission=our_mission_info,
@@ -155,7 +161,6 @@ def post_login():
 @app.route("/about", methods=["GET"])
 def about():
     system: List[System] = get_system_info()
-    random_photo_list: List[Dict] = get_photo()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("about_head")
@@ -187,7 +192,6 @@ def about():
     return render_template(
         "about.tmpl",
         system=system,
-        random_photo_list=random_photo_list,
         head_info=head_info,
         our_history=our_history_info,
         our_mission=our_mission_info,
@@ -202,7 +206,6 @@ def about():
 @app.route("/travels", methods=["GET"])
 def travels():
     system: List[System] = get_system_info()
-    random_photo_list: List[Dict] = get_photo()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("trips_head")
@@ -230,7 +233,6 @@ def travels():
     return render_template(
         "travels.tmpl",
         system=system,
-        random_photo_list=random_photo_list,
         head_info=head_info,
         our_history=our_history_info,
         footer_info=footer_info,
@@ -243,7 +245,6 @@ def travels():
 @app.route("/travel/<int:id_travel>", methods=["GET"])
 def travel(id_travel):
     system: List[System] = get_system_info()
-    random_photo_list: List[Dict] = get_photo()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("trips_head")
@@ -268,7 +269,6 @@ def travel(id_travel):
     return render_template(
         "simple_travel.tmpl",
         system=system,
-        random_photo_list=random_photo_list,
         head_info=head_info,
         our_history=our_history_info,
         trips_head=trips_head_info,
@@ -280,7 +280,6 @@ def travel(id_travel):
 @app.route("/contact", methods=["GET"])
 def contact():
     system: List[System] = get_system_info()
-    random_photo_list: List[Dict] = get_photo()
 
     # верхний текст на картинке
     head_query: dao = dao.HeadsDAO("contacts_head")
@@ -294,7 +293,10 @@ def contact():
     contacts: dao = dao.ContactsDAO()
     contacts_data: List[Contacts] = contacts.get_contacts()
 
-    phones: List = contacts_data.phone.split(";")
+    phones: List = contacts_data.phone
+
+    if phones:
+        phones: List = contacts_data.phone.split(";")
 
     # url
     url = url_for("contact", _external=True)
@@ -302,7 +304,6 @@ def contact():
     return render_template(
         "contacts.tmpl",
         system=system,
-        random_photo_list=random_photo_list,
         head_info=head_info,
         contact_head=contact_head_info,
         contacts=contacts_data,
