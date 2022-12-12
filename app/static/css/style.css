@@ -1868,7 +1868,7 @@ h1, h2, h3, h4, h5,
     .listing-item .listing-item-content h2 {
       text-align: center;
       font-size: 18px; }
-      .listing-item .listing-item-content h2, .listing-item .listing-item-content h2 a {
+      .listing-item .listing-item-content h2, .listing-item .listing-item-content h6, .listing-item .listing-item-content h2 a {
         color: #fff; }
     .listing-item .listing-item-content span {
       color: #fff; }

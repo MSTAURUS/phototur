@@ -6,8 +6,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from config import Config
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
+
 db = SQLAlchemy(app)
 
 login = LoginManager(app)
@@ -21,10 +23,10 @@ if not app.debug:
                                        backupCount=10)
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-    file_handler.setLevel(logging.INFO)
+    file_handler.setLevel(logging.ERROR)
     app.logger.addHandler(file_handler)
 
-    app.logger.setLevel(logging.INFO)
+    app.logger.setLevel(logging.ERROR)
     app.logger.info('Phototur startup')
 
 from app import routes, models, errors, dao

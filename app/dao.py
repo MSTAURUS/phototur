@@ -127,6 +127,8 @@ class TripsDAO:
             Trips.description,
             Trips.photo_card,
             Trips.showed,
+            Trips.date_start,
+            Trips.date_finish,
             Trips.id,
         )
 
@@ -138,6 +140,8 @@ class TripsDAO:
             Trips.description,
             Trips.photo_card,
             Trips.showed,
+            Trips.date_start,
+            Trips.date_finish,
             Trips.id,
         ).filter(Trips.showed == 1).limit(limit)
 
@@ -157,6 +161,8 @@ class TripsDAO:
         description: str,
         photo_card: str,
         showed: bool,
+        date_start: datetime,
+        date_finish: datetime
     ) -> None:
         self.trips.name = name
         self.trips.price = price
@@ -164,6 +170,8 @@ class TripsDAO:
         self.trips.description = description
         self.trips.photo_card = photo_card
         self.trips.showed = showed
+        self.trips.date_start = date_start
+        self.trips.date_finish = date_finish
 
         # Если записей нет, то нужно создать
         if self.trips.id is None:

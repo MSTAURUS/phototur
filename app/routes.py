@@ -535,11 +535,13 @@ def admin_trip_edit(id_trip):
     short_desc: str = stripex(request.form.get("short_desc"))
     description: str = stripex(request.form.get("texteditor"))
     photo_card: str = stripex(request.form.get("photo_card"))
+    date_start: datetime = stripex(request.form.get("date_start"))
+    date_finish: datetime = stripex(request.form.get("date_finish"))
 
     showed: int = 1 if request.form.get("showed") else 0
 
     showed: bool = bool(showed)
-    travels_query.save(name, price, short_desc, description, photo_card, showed)
+    travels_query.save(name, price, short_desc, description, photo_card, showed, date_start, date_finish)
 
     flash("Запись сохранена.", "success")
     return redirect(url_for("admin_trips"))
@@ -953,3 +955,15 @@ def admin_users():
         editing="/admin/user/",
         deleting="/admin/user/del/",
     )
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    system: List[System] = get_system_info()
+    return render_template('404.tmpl', system=system), 404
+
+
+@app.errorhandler(500)
+def server_error(e):
+    system: List[System] = get_system_info()
+    return render_template('500.tmpl', system=system), 500

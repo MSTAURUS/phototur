@@ -1,6 +1,6 @@
 function getData() {
     // URL на который будем отправлять GET запрос
-    const requestURL = 'http://127.0.0.1:5000/get_photo';
+    const requestURL = '/get_photo';
     const xhr = new XMLHttpRequest();
     xhr.open('GET', requestURL);
     xhr.responseType = 'json';

@@ -75,6 +75,8 @@ class Trips(db.Model):
     description: Optional[str] = db.Column(db.String)
     photo_card: Optional[str] = db.Column(db.String)
     showed: Optional[bool] = db.Column(db.Integer)
+    date_start: Optional[datetime] = db.Column(db.DateTime)
+    date_finish: Optional[datetime] = db.Column(db.DateTime)
 
     def __repr__(self):
         return f"<Trips {self.name}>"

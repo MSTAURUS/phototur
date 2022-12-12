@@ -108,12 +108,14 @@ CREATE TABLE IF NOT EXISTS `system` (
 -- Дамп структуры для таблица phototur.trips
 CREATE TABLE IF NOT EXISTS `trips` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `name` varchar(33) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `price` int(11) NOT NULL DEFAULT '0',
   `short_desc` varchar(33) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `photo_card` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `showed` tinyint(4) NOT NULL DEFAULT '0',
+  `date_start` date DEFAULT NULL,
+  `date_finish` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -133,9 +135,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `login` (`login`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Дамп данных таблицы phototur.users: ~1 rows (приблизительно)
-INSERT INTO `users` (`id`, `login`, `name`, `is_admin`, `is_delete`, `lastdate`, `password_hash`, `about`) VALUES
-	(1, 'root', NULL, 0, 0, '2022-06-08 19:48:12', 'pbkdf2:sha256:260000$O47qWC8cnXBBTWLG$39821956e7ae4a07b2c5be777ff84ae81e1ef386e235f250294f1b1349785509', '');
+-- Экспортируемые данные не выделены.
 
 -- Дамп структуры для триггер phototur.BI_BLOG
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
