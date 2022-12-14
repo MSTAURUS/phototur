@@ -61,9 +61,10 @@
                     </div>
                 </div>
             </header>
-                    {% for category, message in get_flashed_messages(with_categories=True) %}
-                    <div class="alert alert-{{category}} alert-dismissible">{{ message }}</div>
-                    {% endfor %}
+
+            {% for category, message in get_flashed_messages(with_categories=True) %}
+            <div class="alert alert-{{category}} alert-dismissible">{{ message }}</div>
+            {% endfor %}
 
             {% block header_banner %}
             <div class="ftco-blocks-cover-1">

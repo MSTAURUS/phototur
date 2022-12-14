@@ -3,15 +3,16 @@ from datetime import datetime
 from datetime import timezone
 from typing import Dict, List
 
-from flask import (
-    render_template,
-    redirect,
-    request,
-    url_for,
-    send_from_directory,
-    make_response,
-    flash
-)
+# from flask import (
+#     render_template,
+#     redirect,
+#     request,
+#     url_for,
+#     send_from_directory,
+#     make_response,
+#     flash
+# )
+from flask import *
 from flask_login import login_user, logout_user, current_user, login_required
 
 from app import app, dao, db
@@ -897,7 +898,7 @@ def admin_user_edit(id_user):
         error = True
 
     if not exist_user:
-        user_for_name: List[Users] = user_query.get_by_login(login_this_user)
+        user_for_name: Users = user_query.get_by_login(login_this_user)
         if user_for_name:
             flash("Логин занят", "warning")
             error = True
@@ -955,15 +956,3 @@ def admin_users():
         editing="/admin/user/",
         deleting="/admin/user/del/",
     )
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    system: List[System] = get_system_info()
-    return render_template('404.tmpl', system=system), 404
-
-
-@app.errorhandler(500)
-def server_error(e):
-    system: List[System] = get_system_info()
-    return render_template('500.tmpl', system=system), 500

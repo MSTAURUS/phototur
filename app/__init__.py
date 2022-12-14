@@ -1,11 +1,13 @@
 import logging
-from logging.handlers import RotatingFileHandler
 import os
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
-from config import Config
+from logging.handlers import RotatingFileHandler
+from typing import List
 
+from flask import Flask, render_template
+from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
+
+from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -30,3 +32,15 @@ if not app.debug:
     app.logger.info('Phototur startup')
 
 from app import routes, models, errors, dao
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    system: List[models.System] = routes.get_system_info()
+    return render_template('404.tmpl', system=system, head_info=[]), 404
+
+
+@app.errorhandler(500)
+def server_error(e):
+    system: List[models.System] = routes.get_system_info()
+    return render_template('500.tmpl', system=system, head_info=[]), 500

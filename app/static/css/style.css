@@ -1966,33 +1966,33 @@ h1, h2, h3, h4, h5,
 .base_contacts h{
 }
 
-  .alert-primary {
-    color: #fff !important;
-    border: none !important;
-    background-color: #1c84c6 !important;
-  }
+.alert-primary {
+  color: #fff !important;
+  border: none !important;
+  background-color: #1c84c6 !important;
+}
 
-  .alert-success
-    color: #fff !important;
-    border: none !important;
-    background-color: #27C24C !important;
-  }
+.alert-success
+  color: #fff !important;
+  border: none !important;
+  background-color: #27C24C !important;
+}
 
-  .alert-info {
-    color: #fff !important;
-    border: none !important;
-    background-color: #73CAEF !important;
-  }
+.alert-info {
+  color: #fff !important;
+  border: none !important;
+  background-color: #73CAEF !important;
+}
 
-  .alert-danger,
-  .alert-error {
-    color: #fff !important;
-    border: none !important;
-    background-color: #FF6656 !important;
-  }
+.alert-danger,
+.alert-error {
+  color: #fff !important;
+  border: none !important;
+  background-color: #FF6656 !important;
+}
 
-  .alert-warning{
-    color: #fff !important;
-    border: none !important;
-    background-color: #F0AD4E !important;
-  }
+.alert-warning{
+  color: #fff !important;
+  border: none !important;
+  background-color: #F0AD4E !important;
+}

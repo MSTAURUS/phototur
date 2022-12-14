@@ -1,15 +1,22 @@
 {% extends "base.tmpl" %}
 
+{% block meta %}
+{% endblock %}
+
+{% block header_banner %}
+{% endblock %}
+
 {% block content %}
+<div class="container">
   <div class="row padding-64">
     <div class="twothird container">
-      <h1 class="text-teal">������ ��������</h1>
-        <p class="lead">There was errors while processing your query. Please try again or contact administrator.</p>
+      <h1 class="text-teal">Упс! Что-то пошло не так.</h1>
+        <p class="lead">Мы уже разбираемся с проблемой. Попробуйте позже.</p>
     </div>
   </div>
+</div>
 
 {% endblock %}
 
-
-
+{% block footer_banner%}
 {% endblock %}
