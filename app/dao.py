@@ -1,7 +1,8 @@
-from app import db
-from app.models import Users, System, Trips, Heads, Stories, Blog, Contacts, Staff
 from datetime import datetime
 from typing import List
+
+from app import db
+from app.models import Blog, Contacts, Heads, Staff, Stories, System, Trips, Users
 
 
 class UserDAO:
@@ -12,7 +13,9 @@ class UserDAO:
             self.user = Users()
         # pass
 
-    def create_superuser(self, login: str, name: str, password: str, about: str, is_admin: bool) -> None:
+    def create_superuser(
+        self, login: str, name: str, password: str, about: str, is_admin: bool
+    ) -> None:
         if password:
             self.user.set_password(password)
         self.user.login = login
@@ -41,26 +44,26 @@ class UserDAO:
     def delete_user(self) -> None:
         db.session.delete(self.user)
         db.session.commit()
-    #
-    # def save(
-    #     self,
-    #     login,
-    #     name,
-    #     is_admin,
-    #     is_delete,
-    #     password_hash,
-    #     about,
-    # ) -> None:
-    #     self.user.login = login
-    #     self.user.name = name
-    #     self.user.is_admin = is_admin
-    #     self.user.is_delete = is_delete
-    #     self.user.password_hash = password_hash
-    #     self.user.about = about
-    #
-    #     # Если записей нет, то нужно создать
-    #     if self.user.id is None:
-    #         db.session.add(self.user)
+        #
+        # def save(
+        #     self,
+        #     login,
+        #     name,
+        #     is_admin,
+        #     is_delete,
+        #     password_hash,
+        #     about,
+        # ) -> None:
+        #     self.user.login = login
+        #     self.user.name = name
+        #     self.user.is_admin = is_admin
+        #     self.user.is_delete = is_delete
+        #     self.user.password_hash = password_hash
+        #     self.user.about = about
+        #
+        #     # Если записей нет, то нужно создать
+        #     if self.user.id is None:
+        #         db.session.add(self.user)
         db.session.commit()
 
     @staticmethod
@@ -90,7 +93,9 @@ class SystemDAO:
     def get_system(self) -> List[System]:
         return self.sys.query.first()
 
-    def save(self, title: str, icon: str, bg_pic: str, main_video: str, statistic: str) -> None:
+    def save(
+        self, title: str, icon: str, bg_pic: str, main_video: str, statistic: str
+    ) -> None:
         self.sys.icon = icon
         self.sys.title = title
         self.sys.bg_pic = bg_pic
@@ -133,17 +138,21 @@ class TripsDAO:
         )
 
     def get_showed_trips(self, limit: int = 1000) -> List[Trips]:
-        return self.trips.query.add_columns(
-            Trips.name,
-            Trips.price,
-            Trips.short_desc,
-            Trips.description,
-            Trips.photo_card,
-            Trips.showed,
-            Trips.date_start,
-            Trips.date_finish,
-            Trips.id,
-        ).filter(Trips.showed == 1).limit(limit)
+        return (
+            self.trips.query.add_columns(
+                Trips.name,
+                Trips.price,
+                Trips.short_desc,
+                Trips.description,
+                Trips.photo_card,
+                Trips.showed,
+                Trips.date_start,
+                Trips.date_finish,
+                Trips.id,
+            )
+            .filter(Trips.showed == 1)
+            .limit(limit)
+        )
 
     def get_trip(self) -> List[Trips]:
         # rows = self.trips.query.filter_by(id=id_trip).first()
@@ -162,7 +171,7 @@ class TripsDAO:
         photo_card: str,
         showed: bool,
         date_start: datetime,
-        date_finish: datetime
+        date_finish: datetime,
     ) -> None:
         self.trips.name = name
         self.trips.price = price
@@ -248,7 +257,14 @@ class ContactsDAO:
         return self.contacts
 
     def save(
-        self, vk: str, instagram: str, telegram: str, whatsapp: str, email: str, phone: str, desc: str
+        self,
+        vk: str,
+        instagram: str,
+        telegram: str,
+        whatsapp: str,
+        email: str,
+        phone: str,
+        desc: str,
     ):
         self.contacts.vk = vk
         self.contacts.instagram = instagram

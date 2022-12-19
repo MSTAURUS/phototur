@@ -1,23 +1,21 @@
 import os
-from datetime import datetime
-from datetime import timezone
+from datetime import datetime, timezone
 from typing import Dict, List
 
-# from flask import (
-#     render_template,
-#     redirect,
-#     request,
-#     url_for,
-#     send_from_directory,
-#     make_response,
-#     flash
-# )
-from flask import *
-from flask_login import login_user, logout_user, current_user, login_required
+from flask import (
+    flash,
+    make_response,
+    redirect,
+    render_template,
+    request,
+    send_from_directory,
+    url_for,
+)
+from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, dao, db
-from app.models import Trips, Heads, System, Stories, Contacts, Staff, Users
-from utils.utils import exception, stripex, get_photo_vk
+from app.models import Contacts, Heads, Staff, Stories, System, Trips, Users
+from utils.utils import exception, get_photo_vk, stripex
 
 
 @app.before_request
@@ -31,7 +29,7 @@ def before_request():
 def get_system_info() -> List[System]:
     system: dao = dao.SystemDAO()
     result: List[System] = system.get_system()
-    result.__dict__.update({'is_auth': current_user.is_authenticated})
+    result.__dict__.update({"is_auth": current_user.is_authenticated})
     return result
 
 
@@ -43,7 +41,7 @@ def get_photo():
 @app.route("/get_photo")
 def photo():
     try:
-        return get_photo(), 200, {'ContentType': 'application/json'}
+        return get_photo(), 200, {"ContentType": "application/json"}
     except Exception:
         return None, 500
 
@@ -317,7 +315,7 @@ def contact():
 @app.route("/blog", methods=["GET"])
 def blog():
     # url
-    url = url_for("blog", _external=True)
+    url = url_for("blog", _external=True)  # noqa: F841
 
     return "blog"
 
@@ -327,7 +325,7 @@ def blog():
 def blog_simple(id_blog):
     # url
     url = url_for("blog_simple", id_blog=id_blog, _external=True)
-    return f"blog {id_blog}"
+    return f"blog {id_blog} - url: {url}"
 
 
 # Часть Админки
@@ -542,7 +540,16 @@ def admin_trip_edit(id_trip):
     showed: int = 1 if request.form.get("showed") else 0
 
     showed: bool = bool(showed)
-    travels_query.save(name, price, short_desc, description, photo_card, showed, date_start, date_finish)
+    travels_query.save(
+        name,
+        price,
+        short_desc,
+        description,
+        photo_card,
+        showed,
+        date_start,
+        date_finish,
+    )
 
     flash("Запись сохранена.", "success")
     return redirect(url_for("admin_trips"))
@@ -914,7 +921,9 @@ def admin_user_edit(id_user):
 
     if exist_user:
         password = pwd if pwd and (pwd == confirm_pwd) else None
-        user_query.create_superuser(login_this_user, name, password, about_user, is_admin)
+        user_query.create_superuser(
+            login_this_user, name, password, about_user, is_admin
+        )
     else:
         # создаём пользюка
         user_query.create_superuser(login_this_user, name, pwd, about_user, is_admin)

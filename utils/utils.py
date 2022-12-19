@@ -1,7 +1,8 @@
-from functools import wraps
-from flask import redirect, url_for, flash
 import logging
+from functools import wraps
 from typing import Dict, List
+
+from flask import flash, redirect, url_for
 
 from .vkrandomphoto import VKRandomPhoto
 
