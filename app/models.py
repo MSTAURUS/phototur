@@ -137,6 +137,8 @@ class System(db.Model):
     bg_pic: Optional[str] = db.Column(db.String(256))
     main_video: Optional[str] = db.Column(db.String(1024))
     statistic: Optional[str] = db.Column(db.String)
+    vk_photo_url: Optional[str] = db.Column(db.String(1024))
+    inst_photo_url: Optional[str] = db.Column(db.String(1024))
 
 
 class Stories(db.Model):

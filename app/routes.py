@@ -2,15 +2,8 @@ import os
 from datetime import datetime, timezone
 from typing import Dict, List
 
-from flask import (
-    flash,
-    make_response,
-    redirect,
-    render_template,
-    request,
-    send_from_directory,
-    url_for,
-)
+from flask import (flash, make_response, redirect, render_template, request,
+                   send_from_directory, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, dao, db
@@ -34,7 +27,8 @@ def get_system_info() -> List[System]:
 
 
 def get_photo():
-    random_photo_list: List[Dict] = get_photo_vk("https://vk.com/albums-53542715")
+    system: List[System] = get_system_info()
+    random_photo_list: List[Dict] = get_photo_vk(system.vk_photo_url)
     return random_photo_list
 
 
@@ -965,3 +959,15 @@ def admin_users():
         editing="/admin/user/",
         deleting="/admin/user/del/",
     )
+
+
+@exception
+@app.route("/admin_save_vk", methods=["POST"], strict_slashes=False)
+@login_required
+def admin_save_vk():
+    url: str = stripex(request.form.get("vk_photo_url"))
+
+    if url:
+        system: dao = dao.SystemDAO(1)
+        system.save_vk_photo_link(url)
+    return redirect(url_for("admin"))

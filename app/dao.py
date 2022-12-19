@@ -2,7 +2,8 @@ from datetime import datetime
 from typing import List
 
 from app import db
-from app.models import Blog, Contacts, Heads, Staff, Stories, System, Trips, Users
+from app.models import (Blog, Contacts, Heads, Staff, Stories, System, Trips,
+                        Users)
 
 
 class UserDAO:
@@ -94,12 +95,21 @@ class SystemDAO:
         return self.sys.query.first()
 
     def save(
-        self, title: str, icon: str, bg_pic: str, main_video: str, statistic: str
+        self,
+        title: str,
+        icon: str,
+        bg_pic: str,
+        main_video: str,
+        statistic: str,
+        vk_photo_url: str,
+        inst_photo_url: str,
     ) -> None:
         self.sys.icon = icon
         self.sys.title = title
         self.sys.bg_pic = bg_pic
         self.sys.main_video = main_video
+        self.sys.vk_photo_url = vk_photo_url
+        self.sys.inst_photo_url = inst_photo_url
         if statistic:
             self.sys.statistic = statistic
 
@@ -110,6 +120,14 @@ class SystemDAO:
 
     def save_statistic(self, statistic: str) -> None:
         self.sys.statistic = statistic
+
+        # Если записей нет, то нужно создать
+        if self.sys.id is None:
+            db.session.add(self.sys)
+        db.session.commit()
+
+    def save_vk_photo_link(self, url: str) -> None:
+        self.sys.vk_photo_url = url
 
         # Если записей нет, то нужно создать
         if self.sys.id is None:

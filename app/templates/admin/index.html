@@ -15,4 +15,14 @@
 {{ system.statistic | safe }}
 {% endif %}
 </div>
+
+
+<div class="container col-md-8 order-md-1">
+    <form action="{{ url_for("admin_save_vk") }}" method="post">
+        <div class="form-group "><label class="control-label" for="vk_photo_url">Ссылка на альбом VK:</label>
+            <input type="text" class="form-control" name="vk_photo_url" value="{{ system.vk_photo_url if system.vk_photo_url != None}}">
+        </div>
+        <p><input type="submit" value="Отправить" class="btn ripple btn-gradient btn-info"></p>
+    </form>
+</div>
 {% endblock %}

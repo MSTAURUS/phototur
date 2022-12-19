@@ -100,6 +100,8 @@ CREATE TABLE IF NOT EXISTS `system` (
   `bg_pic` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `main_video` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `statistic` text,
+  `vk_photo_url` varchar(1024) DEFAULT NULL,
+  `inst_photo_url` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
