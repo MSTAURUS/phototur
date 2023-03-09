@@ -13,6 +13,8 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = (
         f"mysql+pymysql://{DB_LOGIN}:{DB_PASSWORD}@{DB_SERVER}/phototur?charset=utf8mb4"
     )
+    SQLALCHEMY_MAX_OVERFLOW = 0
+    SQLALCHEMY_POOL_RECYCLE = 60
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ADMINS = ["a@b.org"]
     POSTS_PER_PAGE = 25

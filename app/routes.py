@@ -2,8 +2,15 @@ import os
 from datetime import datetime, timezone
 from typing import Dict, List
 
-from flask import (flash, make_response, redirect, render_template, request,
-                   send_from_directory, url_for)
+from flask import (
+    flash,
+    make_response,
+    redirect,
+    render_template,
+    request,
+    send_from_directory,
+    url_for,
+)
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, dao, db

@@ -2,8 +2,7 @@ from datetime import datetime
 from typing import List
 
 from app import db
-from app.models import (Blog, Contacts, Heads, Staff, Stories, System, Trips,
-                        Users)
+from app.models import Blog, Contacts, Heads, Staff, Stories, System, Trips, Users
 
 
 class UserDAO:
