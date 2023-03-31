@@ -7,10 +7,7 @@ from app.models import Blog, Contacts, Heads, Staff, Stories, System, Trips, Use
 
 class UserDAO:
     def __init__(self, id_user: int = None):
-        if id_user:
-            self.user = Users.query.filter_by(id=id_user).first()
-        else:
-            self.user = Users()
+        self.user = Users.query.filter_by(id=id_user).first() if id_user else Users()
         # pass
 
     def create_superuser(
@@ -77,9 +74,7 @@ class UserDAO:
 
     def check_login(self, login: str, password: str) -> bool:
         usr = self.get_by_login(login)
-        check_pwd: bool = False
-        if usr:
-            check_pwd = usr.check_password(password)
+        check_pwd = usr.check_password(password) if usr else False
         return bool(check_pwd and usr)
 
 
@@ -98,19 +93,12 @@ class SystemDAO:
         title: str,
         icon: str,
         bg_pic: str,
-        main_video: str,
-        statistic: str,
-        vk_photo_url: str,
-        inst_photo_url: str,
+        main_video: str
     ) -> None:
         self.sys.icon = icon
         self.sys.title = title
         self.sys.bg_pic = bg_pic
         self.sys.main_video = main_video
-        self.sys.vk_photo_url = vk_photo_url
-        self.sys.inst_photo_url = inst_photo_url
-        if statistic:
-            self.sys.statistic = statistic
 
         # Если записей нет, то нужно создать
         if self.sys.id is None:
@@ -299,10 +287,7 @@ class ContactsDAO:
 
 class StaffDAO:
     def __init__(self, id_empl: int = None):
-        if id_empl:
-            self.empl = Staff.query.filter_by(id=id_empl).first()
-        else:
-            self.empl = Staff()
+        self.empl = Staff.query.filter_by(id=id_empl).first() if id_empl else Staff()
 
     def get_staff(self) -> List[Staff]:
         return self.empl.query.add_columns(

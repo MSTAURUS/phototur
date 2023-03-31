@@ -29,7 +29,8 @@ def before_request():
 def get_system_info() -> List[System]:
     system: dao = dao.SystemDAO()
     result: List[System] = system.get_system()
-    result.__dict__.update({"is_auth": current_user.is_authenticated})
+    if result:
+        result.__dict__.update({"is_auth": current_user.is_authenticated})
     return result
 
 
@@ -123,10 +124,15 @@ def logout():
 @exception
 @app.route("/register", methods=["GET"])
 def register():
-    pass
-    # user: dao = dao.UserDAO()
+    # pass
+    user: dao = dao.UserDAO()
 
-    # user.create_superuser(login="admin", password="admin")
+    if not user.get_user():
+        user.create_superuser(login="admin", password="admin", about="", is_admin=True, name="")
+        flash("Создан пользователь admin с паролем admin. Смените пароль!", "success")
+
+    flash("Действие недоступно", "warning")
+    return redirect(url_for("index"))
 
 
 @exception
@@ -388,7 +394,7 @@ def admin_system_save():
 
     sys: dao = dao.SystemDAO(id_system)
 
-    sys.save(title, icon, bg_pic, main_video, None)
+    sys.save(title=title, icon=icon, bg_pic=bg_pic, main_video=main_video)
 
     flash("Сохранено", "success")
     return redirect(url_for("admin_system"))
@@ -539,6 +545,13 @@ def admin_trip_edit(id_trip):
     date_finish: datetime = stripex(request.form.get("date_finish"))
 
     showed: int = 1 if request.form.get("showed") else 0
+
+    if not date_start or not date_finish:
+        flash("Даты не заполнены.", "error")
+        if id_trip == 0:
+            return redirect(url_for("admin_trip_add"))
+
+        return redirect(url_for("admin_trip_show", id_trip=id_trip))
 
     showed: bool = bool(showed)
     travels_query.save(
