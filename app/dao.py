@@ -254,11 +254,11 @@ class StoriesDAO:
 
 class ContactsDAO:
     def __init__(self):
-        self.contacts = Contacts.query.first()
+        self.contacts = Contacts.query.filter_by(id=1).first()
         if self.contacts is None:
             self.contacts = Contacts()
 
-    def get_contacts(self) -> List[Contacts]:
+    def get_contacts(self) -> Contacts:
         return self.contacts
 
     def save(

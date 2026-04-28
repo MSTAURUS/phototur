@@ -297,9 +297,9 @@ def contact():
 
     # получим контакты
     contacts: dao = dao.ContactsDAO()
-    contacts_data: List[Contacts] = contacts.get_contacts()
+    contacts_data: Contacts = contacts.get_contacts()
 
-    phones: List = contacts_data.phone
+    phones: str = contacts_data.phone
 
     if phones:
         phones: List = contacts_data.phone.split(";")
